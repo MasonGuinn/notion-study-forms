@@ -14,12 +14,10 @@
     box-sizing: border-box;
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
-}
-
 body {
+    margin: 0;
+    padding: 10px;
+
     font-family:
         Inter,
         -apple-system,
@@ -29,100 +27,187 @@ body {
 
     background: transparent;
     color: inherit;
-
-    padding: 10px;
 }
 
-/* =========================
-   QUESTION
-========================= */
+/* =======================
+   QUESTIONS CONTAINER
+======================= */
 
-.question-wrapper {
-    margin-bottom: 24px;
+#questions {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* =======================
+   QUESTION CARD
+======================= */
+
+.question-card {
+    padding-bottom: 10px;
 }
 
 .question-header {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 6px;
+    align-items: flex-start;
+    gap: 4px;
 }
 
-.icon-btn {
+.question-display {
+
+    flex: 1;
+
+    font-size: 16px;
+    line-height: 1.55;
+
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* =======================
+   MENU
+======================= */
+
+.menu-wrapper {
+    position: relative;
+
+    opacity: 0;
+
+    transition: opacity .15s ease;
+}
+
+.question-header:hover .menu-wrapper {
+    opacity: 1;
+}
+
+.menu-button {
+
     border: none;
     background: transparent;
+
     color: inherit;
 
     cursor: pointer;
 
-    opacity: .35;
-
-    font-size: 13px;
-
-    transition: opacity .15s;
-}
-
-.question-wrapper:hover .icon-btn {
-    opacity: .75;
-}
-
-.icon-btn:hover {
-    opacity: 1;
-}
-
-.question-display {
     font-size: 16px;
-    line-height: 1.7;
-    white-space: pre-wrap;
+
+    padding: 0 4px;
+
+    border-radius: 4px;
+
+    opacity: .45;
 }
 
-.question-editor {
+.menu-button:hover {
+
+    opacity: 1;
+
+    background:
+        rgba(128,128,128,.08);
+}
+
+.menu {
+
+    position: absolute;
+
+    right: 0;
+    top: 22px;
+
+    display: none;
+
+    min-width: 180px;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    background:
+        rgb(38,38,38);
+
+    box-shadow:
+        0 10px 24px rgba(0,0,0,.25);
+
+    z-index: 1000;
+}
+
+.menu.open {
+    display: block;
+}
+
+.menu-item {
+
+    width: 100%;
+
+    border: none;
+    background: transparent;
+
+    color: white;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    padding: 10px 12px;
+
+    font-size: 14px;
+}
+
+.menu-item:hover {
+    background:
+        rgba(255,255,255,.08);
+}
+
+/* =======================
+   QUESTION EDITOR
+======================= */
+
+.question-edit-container {
     display: none;
 }
 
-.question-editor textarea {
-    width: 100%;
-    min-height: 120px;
+.question-editor {
 
-    border: 1px solid rgba(128,128,128,.25);
-    border-radius: 8px;
+    width: 100%;
+
+    min-height: 90px;
+
+    margin-top: 6px;
 
     padding: 10px;
 
-    background: transparent;
-    color: inherit;
+    border: 1px solid rgba(128,128,128,.2);
 
-    font-family: inherit;
-    font-size: 16px;
-    line-height: 1.6;
-
-    resize: vertical;
-}
-
-.save-question-btn {
-    margin-top: 10px;
-
-    border: 1px solid rgba(128,128,128,.3);
     border-radius: 6px;
 
     background: transparent;
     color: inherit;
 
-    padding: 6px 12px;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.6;
 
-    cursor: pointer;
+    resize: vertical;
 }
 
-/* =========================
-   ANSWER
-========================= */
+.edit-actions {
 
-.answer-section {
-    margin-top: 10px;
+    margin-top: 8px;
+
+    display: flex;
+    gap: 8px;
 }
+
+/* =======================
+   ANSWER BOX
+======================= */
 
 .answer-box {
+
     width: 100%;
-    min-height: 250px;
+
+    min-height: 120px;
+
+    margin-top: 6px;
 
     border: none;
     outline: none;
@@ -130,299 +215,461 @@ body {
     background: transparent;
     color: inherit;
 
-    font-size: 16px;
-    line-height: 1.7;
+    font-family: inherit;
+
+    font-size: 15px;
+    line-height: 1.6;
 
     resize: vertical;
-
-    font-family: inherit;
 }
 
 .answer-box::placeholder {
-    opacity: .5;
+    opacity: .4;
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* =======================
+   META
+======================= */
 
-.toolbar {
-    margin-top: 12px;
+.meta {
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    margin-top: 4px;
 
-    flex-wrap: wrap;
-    gap: 12px;
-
-    font-size: 13px;
-    opacity: .7;
+    font-size: 12px;
+    opacity: .55;
 }
 
-.stats {
-    display: flex;
-    gap: 16px;
+.separator {
+
+    margin-top: 10px;
+
+    border-bottom:
+        1px solid rgba(128,128,128,.12);
 }
 
-.controls {
-    display: flex;
-    gap: 8px;
-}
+/* =======================
+   BUTTONS
+======================= */
 
-button {
+.action-btn {
+
+    border: 1px solid rgba(128,128,128,.25);
+
     background: transparent;
     color: inherit;
 
-    border: 1px solid rgba(128,128,128,.35);
-    border-radius: 6px;
+    padding: 7px 11px;
 
-    padding: 5px 10px;
+    border-radius: 6px;
 
     cursor: pointer;
 }
 
-button:hover {
-    opacity: .85;
+.action-btn:hover {
+
+    background:
+        rgba(128,128,128,.08);
+}
+
+
+.actions {
+
+    margin-top: 18px;
+
+    display: flex;
+    gap: 8px;
+}
+
+.empty-message {
+
+    opacity: .55;
+    font-size: 14px;
 }
 
 </style>
-
 </head>
 <body>
 
-<!-- QUESTION -->
+<div id="questions"></div>
 
-<div class="question-wrapper">
+<div class="actions">
 
-    <div class="question-header">
-        <button id="editQuestionBtn" class="icon-btn">
-            ✏️ Edit Question
-        </button>
-    </div>
-
-    <div id="questionDisplay" class="question-display">
-        Click "Edit Question" to add a question.
-    </div>
-
-    <div id="questionEditor" class="question-editor">
-
-        <textarea
-            id="questionInput"
-            placeholder="Paste your question here..."
-        ></textarea>
-
-        <button
-            id="saveQuestionBtn"
-            class="save-question-btn">
-            Save Question
-        </button>
-
-    </div>
-
-</div>
-
-<!-- ANSWER -->
-
-<div class="answer-section">
-
-    <textarea
-        id="answer"
-        class="answer-box"
-        placeholder="Type your answer here..."
-    ></textarea>
-
-</div>
-
-<!-- FOOTER -->
-
-<div class="toolbar">
-
-    <div class="stats">
-        <span id="wordCount">0 words</span>
-        <span id="charCount">0 characters</span>
-        <span id="status">Saved</span>
-    </div>
-
-    <div class="controls">
-        <button id="clearAnswerBtn">
-            Clear Answer
-        </button>
-    </div>
+    <button
+        class="action-btn"
+        onclick="addQuestion()">
+        + Add Question
+    </button>
 
 </div>
 
 <script>
 
-// ====================================
-// QUESTION ID
-// ====================================
-
-const params = new URLSearchParams(window.location.search);
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
 
 const lessonId =
     params.get("id") || "default";
 
-const QUESTION_KEY =
-    `study-question-${lessonId}`;
+const STORAGE_KEY =
+    `lesson-${lessonId}`;
 
-const ANSWER_KEY =
-    `study-answer-${lessonId}`;
+let data =
+    JSON.parse(
+        localStorage.getItem(STORAGE_KEY)
+    ) || [];
 
-// ====================================
-// ELEMENTS
-// ====================================
-
-const questionDisplay =
-    document.getElementById("questionDisplay");
-
-const questionEditor =
-    document.getElementById("questionEditor");
-
-const questionInput =
-    document.getElementById("questionInput");
-
-const editQuestionBtn =
-    document.getElementById("editQuestionBtn");
-
-const saveQuestionBtn =
-    document.getElementById("saveQuestionBtn");
-
-const answerBox =
-    document.getElementById("answer");
-
-const wordCount =
-    document.getElementById("wordCount");
-
-const charCount =
-    document.getElementById("charCount");
-
-const status =
-    document.getElementById("status");
-
-const clearAnswerBtn =
-    document.getElementById("clearAnswerBtn");
-
-// ====================================
-// QUESTION LOAD
-// ====================================
-
-const savedQuestion =
-    localStorage.getItem(QUESTION_KEY);
-
-if (savedQuestion) {
-    questionDisplay.textContent =
-        savedQuestion;
-    questionInput.value =
-        savedQuestion;
-}
-
-// ====================================
-// QUESTION EDIT
-// ====================================
-
-editQuestionBtn.addEventListener("click", () => {
-
-    questionEditor.style.display =
-        "block";
-
-    questionDisplay.style.display =
-        "none";
-});
-
-saveQuestionBtn.addEventListener("click", () => {
-
-    const q =
-        questionInput.value.trim();
-
-    if (!q) return;
+function saveData() {
 
     localStorage.setItem(
-        QUESTION_KEY,
-        q
+        STORAGE_KEY,
+        JSON.stringify(data)
     );
+}
 
-    questionDisplay.textContent = q;
-
-    questionDisplay.style.display =
-        "block";
-
-    questionEditor.style.display =
-        "none";
-});
-
-// ====================================
-// ANSWER LOAD
-// ====================================
-
-answerBox.value =
-    localStorage.getItem(ANSWER_KEY) || "";
-
-// ====================================
-// STATS
-// ====================================
-
-function updateStats() {
+function wordCount(text) {
 
     const trimmed =
-        answerBox.value.trim();
+        text.trim();
 
-    const words =
-        trimmed
+    return trimmed
         ? trimmed.split(/\s+/).length
         : 0;
-
-    wordCount.textContent =
-        `${words} words`;
-
-    charCount.textContent =
-        `${answerBox.value.length} characters`;
 }
 
-function saveAnswer() {
+function escapeHtml(text) {
 
-    localStorage.setItem(
-        ANSWER_KEY,
-        answerBox.value
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text;
+
+    return div.innerHTML;
+}
+
+function closeAllMenus() {
+
+    document
+        .querySelectorAll(".menu")
+        .forEach(menu =>
+            menu.classList.remove(
+                "open"
+            )
+        );
+}
+
+function render() {
+
+    const container =
+        document.getElementById(
+            "questions"
+        );
+
+    container.innerHTML = "";
+
+    if (data.length === 0) {
+
+        container.innerHTML =
+            '<div class="empty-message">Click "Add Question" to begin.</div>';
+
+        return;
+    }
+
+    data.forEach((item,index)=>{
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "question-card";
+
+        card.innerHTML = `
+
+<div class="question-header">
+
+    <div
+        id="display-${index}"
+        class="question-display">
+        ${escapeHtml(item.question)}
+    </div>
+
+    <div class="menu-wrapper">
+
+        <button
+            class="menu-button"
+            onclick="toggleMenu(event,${index})">
+            ⋯
+        </button>
+
+        <div
+            id="menu-${index}"
+            class="menu">
+
+            <button
+                class="menu-item"
+                onclick="startEdit(${index})">
+                Edit Question
+            </button>
+
+            <button
+                class="menu-item"
+                onclick="duplicateQuestion(${index})">
+                Duplicate
+            </button>
+
+            <button
+                class="menu-item"
+                onclick="moveUp(${index})">
+                Move Up
+            </button>
+
+            <button
+                class="menu-item"
+                onclick="moveDown(${index})">
+                Move Down
+            </button>
+
+            <button
+                class="menu-item"
+                onclick="deleteQuestion(${index})">
+                Delete
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div
+    id="edit-${index}"
+    class="question-edit-container">
+
+    <textarea
+        id="input-${index}"
+        class="question-editor"
+    >${escapeHtml(item.question)}</textarea>
+
+    <div class="edit-actions">
+
+        <button
+            class="action-btn"
+            onclick="saveQuestion(${index})">
+            Save
+        </button>
+
+        <button
+            class="action-btn"
+            onclick="cancelEdit(${index})">
+            Cancel
+        </button>
+
+    </div>
+
+</div>
+
+<textarea
+    class="answer-box"
+    placeholder="Type your answer here..."
+    oninput="updateAnswer(${index}, this.value)"
+>${escapeHtml(item.answer)}</textarea>
+
+<div class="meta">
+    ${wordCount(item.answer)} words
+</div>
+
+<div class="separator"></div>
+
+`;
+
+        container.appendChild(card);
+    });
+
+}
+
+function toggleMenu(event,index){
+
+    event.stopPropagation();
+
+    const menu =
+        document.getElementById(
+            `menu-${index}`
+        );
+
+    const isOpen =
+        menu.classList.contains(
+            "open"
+        );
+
+    closeAllMenus();
+
+    if (!isOpen) {
+        menu.classList.add("open");
+    }
+}
+
+function startEdit(index){
+
+    closeAllMenus();
+
+    document.getElementById(
+        `display-${index}`
+    ).style.display =
+        "none";
+
+    document.getElementById(
+        `edit-${index}`
+    ).style.display =
+        "block";
+}
+
+function saveQuestion(index){
+
+    const value =
+        document
+            .getElementById(
+                `input-${index}`
+            )
+            .value
+            .trim();
+
+    if (!value) return;
+
+    data[index].question =
+        value;
+
+    saveData();
+
+    closeAllMenus();
+
+    render();
+}
+
+function cancelEdit(index){
+
+    closeAllMenus();
+
+    render();
+}
+
+function updateAnswer(index,value){
+
+    data[index].answer =
+        value;
+
+    saveData();
+
+    const metas =
+        document.querySelectorAll(
+            ".meta"
+        );
+
+    if (metas[index]) {
+
+        metas[index].textContent =
+            `${wordCount(value)} words`;
+    }
+}
+
+function addQuestion(){
+
+    data.push({
+        question: "New Question",
+        answer: ""
+    });
+
+    saveData();
+
+    render();
+
+    startEdit(
+        data.length - 1
+    );
+}
+
+function deleteQuestion(index){
+
+    closeAllMenus();
+
+    if (
+        !confirm(
+            "Delete this question?"
+        )
+    ) return;
+
+    data.splice(index,1);
+
+    saveData();
+    render();
+}
+
+function duplicateQuestion(index){
+
+    closeAllMenus();
+
+    data.splice(
+        index + 1,
+        0,
+        {
+            question:
+                data[index].question,
+            answer:
+                data[index].answer
+        }
     );
 
-    updateStats();
-
-    const now = new Date();
-
-    status.textContent =
-        `Saved ${now.toLocaleTimeString([], {
-            hour: "numeric",
-            minute: "2-digit"
-        })}`;
+    saveData();
+    render();
 }
 
-answerBox.addEventListener(
-    "input",
-    saveAnswer
+function moveUp(index){
+
+    closeAllMenus();
+
+    if (index === 0) return;
+
+    [
+        data[index],
+        data[index-1]
+    ] =
+    [
+        data[index-1],
+        data[index]
+    ];
+
+    saveData();
+    render();
+}
+
+function moveDown(index){
+
+    closeAllMenus();
+
+    if (
+        index >= data.length - 1
+    ) return;
+
+    [
+        data[index],
+        data[index+1]
+    ] =
+    [
+        data[index+1],
+        data[index]
+    ];
+
+    saveData();
+    render();
+}
+
+document.addEventListener(
+    "click",
+    closeAllMenus
 );
 
-// ====================================
-// CLEAR
-// ====================================
-
-clearAnswerBtn.addEventListener("click", () => {
-
-    answerBox.value = "";
-
-    localStorage.removeItem(
-        ANSWER_KEY
-    );
-
-    updateStats();
-
-    status.textContent =
-        "Answer Cleared";
-});
-
-// ====================================
-
-updateStats();
+render();
 
 </script>
 
