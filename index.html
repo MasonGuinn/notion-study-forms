@@ -353,30 +353,43 @@ function loadData() {
 }
 
 async function loadInitialData() {
-    // Only seed when there is no stored entry at all. An existing entry,
-    // including an intentionally empty one, is never overwritten.
-    if (localStorage.getItem(STORAGE_KEY) !== null) {
-        return loadData();
-    }
+    // Seed wins on every load: when lessons.json has a seed for this
+    // lesson, the seed's question, model answer, and section replace the
+    // stored ones, while the user's typed answer carries over by position.
+    // A lesson with no seed keeps its stored data, and a failed seed fetch
+    // falls back to the stored data instead of blanking the lesson.
+    // The merged list is returned in memory; it is written to storage the
+    // next time the app saves (typing, navigating, or editing), as before.
+    const stored = loadData();
 
     try {
         const response = await fetch("lessons.json");
 
         if (!response.ok) {
-            return [];
+            return stored;
         }
 
         const seeds = await response.json();
         const seeded = seeds ? seeds[lessonId] : null;
 
         if (!Array.isArray(seeded)) {
-            return [];
+            return stored;
         }
 
-        return seeded.map(normalizeItem);
+        return seeded.map((seedItem, index) => {
+            const normalizedSeed = normalizeItem(seedItem);
+            const typedAnswer =
+                stored[index] && typeof stored[index].answer === "string"
+                    ? stored[index].answer
+                    : "";
+            return {
+                ...normalizedSeed,
+                answer: typedAnswer
+            };
+        });
     } catch (error) {
         console.error(`Unable to load seed for lesson "${lessonId}".`, error);
-        return [];
+        return stored;
     }
 }
 
