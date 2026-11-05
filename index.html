@@ -282,6 +282,7 @@ textarea {
 <script>
 const params = new URLSearchParams(window.location.search);
 const lessonId = params.get("id") || "default";
+const mode = params.get("mode") === "practice" ? "practice" : "understanding";
 const STORAGE_KEY = `lesson-${lessonId}`;
 const INDEX_KEY = `${STORAGE_KEY}-current-index`;
 
@@ -386,7 +387,8 @@ function render() {
 
     const progress = document.createElement("div");
     progress.className = "progress";
-    progress.textContent = `Question ${currentIndex + 1} of ${data.length}`;
+    const itemLabel = mode === "practice" ? "Problem" : "Question";
+    progress.textContent = `${itemLabel} ${currentIndex + 1} of ${data.length}`;
 
     const questionRow = document.createElement("div");
     questionRow.className = "question-row";
@@ -450,7 +452,11 @@ function render() {
     });
 
     const correctToggle = createButton(
-        item.showCorrectAnswer ? "Hide Answer" : "Show Answer",
+        item.showCorrectAnswer
+            ? "Hide Answer"
+            : mode === "practice"
+                ? "Show Answer"
+                : "Show Sample Answer",
         "correct-toggle",
         toggleCorrectAnswer
     );
