@@ -288,6 +288,8 @@ const INDEX_KEY = `${STORAGE_KEY}-current-index`;
 
 let data = loadData();
 let currentIndex = loadCurrentIndex();
+const itemLabel = mode === "practice" ? "Problem" : "Question";
+const addItemLabel = `+ Add ${itemLabel}`;
 
 function normalizeItem(item) {
     const existing = item && typeof item === "object" ? item : {};
@@ -370,10 +372,10 @@ function render() {
     if (data.length === 0) {
         const emptyMessage = document.createElement("div");
         emptyMessage.className = "empty-message";
-        emptyMessage.textContent = 'Click "Add Question" to begin.';
+        emptyMessage.textContent = `Click "${addItemLabel}" to begin.`;
         container.appendChild(emptyMessage);
         container.appendChild(
-            createButton("+ Add Question", "action-button add-question", addQuestion)
+            createButton(addItemLabel, "action-button add-question", addQuestion)
         );
         return;
     }
@@ -387,7 +389,6 @@ function render() {
 
     const progress = document.createElement("div");
     progress.className = "progress";
-    const itemLabel = mode === "practice" ? "Problem" : "Question";
     progress.textContent = `${itemLabel} ${currentIndex + 1} of ${data.length}`;
 
     const questionRow = document.createElement("div");
@@ -472,7 +473,7 @@ function render() {
     const navigation = document.createElement("nav");
     navigation.className = "navigation";
     const addQuestionButton = createButton(
-        "+ Add Question",
+        addItemLabel,
         "action-button add-question",
         addQuestion
     );
@@ -580,7 +581,7 @@ function navigate(offset) {
 
 function addQuestion() {
     data.push({
-        question: "New Question",
+        question: `New ${itemLabel}`,
         answer: "",
         correctAnswer: "",
         showCorrectAnswer: false
