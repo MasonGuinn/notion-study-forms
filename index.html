@@ -247,6 +247,10 @@ textarea {
     margin-top: 12px;
 }
 
+.navigation .add-question {
+    margin: 0;
+}
+
 .navigation .action-button {
     min-width: 70px;
 }
@@ -273,9 +277,6 @@ textarea {
 
 <main id="app">
     <div id="flashcard"></div>
-    <button class="action-button add-question" id="add-question" type="button">
-        + Add Question
-    </button>
 </main>
 
 <script>
@@ -370,7 +371,9 @@ function render() {
         emptyMessage.className = "empty-message";
         emptyMessage.textContent = 'Click "Add Question" to begin.';
         container.appendChild(emptyMessage);
-        document.getElementById("add-question").hidden = false;
+        container.appendChild(
+            createButton("+ Add Question", "action-button add-question", addQuestion)
+        );
         return;
     }
 
@@ -462,12 +465,18 @@ function render() {
 
     const navigation = document.createElement("nav");
     navigation.className = "navigation";
+    const addQuestionButton = createButton(
+        "+ Add Question",
+        "action-button add-question",
+        addQuestion
+    );
     navigation.append(
         createButton("Previous", "action-button", () => navigate(-1)),
+        addQuestionButton,
         createButton("Next", "action-button", () => navigate(1))
     );
     navigation.children[0].disabled = currentIndex === 0;
-    navigation.children[1].disabled = currentIndex === data.length - 1;
+    navigation.children[2].disabled = currentIndex === data.length - 1;
 
     card.append(
         progress,
@@ -478,7 +487,6 @@ function render() {
         navigation
     );
     container.appendChild(card);
-    document.getElementById("add-question").hidden = false;
     autoGrow(answer);
 }
 
@@ -615,8 +623,6 @@ function deleteQuestion() {
     saveCurrentIndex();
     render();
 }
-
-document.getElementById("add-question").addEventListener("click", addQuestion);
 
 document.addEventListener("click", event => {
     if (!event.target.closest(".menu-wrapper")) {
