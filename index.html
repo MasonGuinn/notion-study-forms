@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-
 :root {
     color-scheme: light dark;
 }
@@ -14,120 +13,115 @@
     box-sizing: border-box;
 }
 
+html,
 body {
     margin: 0;
-    padding: 10px;
+    padding: 0;
+}
 
+body {
+    color: inherit;
     font-family:
         Inter,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
-
-    background: transparent;
-    color: inherit;
 }
 
-/* =======================
-   QUESTIONS CONTAINER
-======================= */
+button,
+textarea {
+    font: inherit;
+}
 
 #questions {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 2px;
 }
 
-/* =======================
-   QUESTION CARD
-======================= */
-
 .question-card {
-    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(128, 128, 128, .14);
+    padding: 2px 0;
 }
 
 .question-header {
+    position: relative;
     display: flex;
     align-items: flex-start;
-    gap: 4px;
+    min-height: 28px;
 }
 
 .question-display {
-
     flex: 1;
-
-    font-size: 16px;
-    line-height: 1.55;
-
+    min-width: 0;
+    padding: 3px 0;
+    color: inherit;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1.45;
     white-space: pre-wrap;
     word-break: break-word;
 }
 
-/* =======================
-   MENU
-======================= */
+.question-display::before {
+    display: inline-block;
+    width: 16px;
+    color: inherit;
+    content: "▶";
+    font-size: 11px;
+    opacity: .6;
+    transform: translateY(-1px);
+}
+
+.question-card.expanded .question-display::before {
+    content: "▼";
+}
 
 .menu-wrapper {
     position: relative;
-
+    flex: 0 0 auto;
     opacity: 0;
-
-    transition: opacity .15s ease;
+    transition: opacity .12s ease;
 }
 
-.question-header:hover .menu-wrapper {
+.question-header:hover .menu-wrapper,
+.menu-wrapper:focus-within,
+.menu-wrapper.menu-visible {
     opacity: 1;
 }
 
 .menu-button {
-
-    border: none;
-    background: transparent;
-
-    color: inherit;
-
-    cursor: pointer;
-
-    font-size: 16px;
-
-    padding: 0 4px;
-
+    border: 0;
     border-radius: 4px;
-
-    opacity: .45;
+    padding: 2px 5px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: 17px;
+    line-height: 1.2;
+    opacity: .5;
 }
 
-.menu-button:hover {
-
+.menu-button:hover,
+.menu-button:focus-visible {
+    background: rgba(128, 128, 128, .1);
     opacity: 1;
-
-    background:
-        rgba(128,128,128,.08);
+    outline: none;
 }
 
 .menu {
-
     position: absolute;
-
+    top: 24px;
     right: 0;
-    top: 22px;
-
+    z-index: 10;
     display: none;
-
-    min-width: 180px;
-
-    border-radius: 8px;
-
+    min-width: 150px;
     overflow: hidden;
-
-    background:
-        rgb(38,38,38);
-
-    box-shadow:
-        0 10px 24px rgba(0,0,0,.25);
-
-    z-index: 1000;
+    border: 1px solid rgba(128, 128, 128, .18);
+    border-radius: 6px;
+    background: Canvas;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
 }
 
 .menu.open {
@@ -135,157 +129,130 @@ body {
 }
 
 .menu-item {
-
+    display: block;
     width: 100%;
-
-    border: none;
-    background: transparent;
-
-    color: white;
-
-    text-align: left;
-
-    cursor: pointer;
-
-    padding: 10px 12px;
-
-    font-size: 14px;
-}
-
-.menu-item:hover {
-    background:
-        rgba(255,255,255,.08);
-}
-
-/* =======================
-   QUESTION EDITOR
-======================= */
-
-.question-edit-container {
-    display: none;
-}
-
-.question-editor {
-
-    width: 100%;
-
-    min-height: 90px;
-
-    margin-top: 6px;
-
-    padding: 10px;
-
-    border: 1px solid rgba(128,128,128,.2);
-
-    border-radius: 6px;
-
+    border: 0;
+    padding: 7px 10px;
     background: transparent;
     color: inherit;
-
-    font-family: inherit;
-    font-size: 15px;
-    line-height: 1.6;
-
-    resize: vertical;
+    cursor: pointer;
+    text-align: left;
+    font-size: 13px;
 }
 
-.edit-actions {
-
-    margin-top: 8px;
-
-    display: flex;
-    gap: 8px;
+.menu-item:hover,
+.menu-item:focus-visible {
+    background: rgba(128, 128, 128, .1);
+    outline: none;
 }
 
-/* =======================
-   ANSWER BOX
-======================= */
+.question-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+        grid-template-rows .2s ease,
+        opacity .15s ease;
+}
+
+.question-card.expanded .question-body {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+.question-body-inner {
+    min-height: 0;
+    overflow: hidden;
+    padding-left: 16px;
+}
 
 .answer-box {
-
+    display: block;
     width: 100%;
-
-    min-height: 120px;
-
-    margin-top: 6px;
-
-    border: none;
-    outline: none;
-
+    min-height: 24px;
+    height: 24px;
+    margin: 0;
+    overflow: hidden;
+    border: 0;
+    outline: 0;
+    padding: 2px 0 0;
+    resize: none;
     background: transparent;
     color: inherit;
-
-    font-family: inherit;
-
     font-size: 15px;
-    line-height: 1.6;
-
-    resize: vertical;
+    line-height: 1.5;
 }
 
 .answer-box::placeholder {
     opacity: .4;
 }
 
-/* =======================
-   META
-======================= */
-
 .meta {
-
-    margin-top: 4px;
-
+    padding: 2px 0 5px;
+    color: inherit;
     font-size: 12px;
     opacity: .55;
 }
 
-.separator {
-
-    margin-top: 10px;
-
-    border-bottom:
-        1px solid rgba(128,128,128,.12);
+.question-edit-container {
+    display: none;
+    padding: 2px 0 5px 16px;
 }
 
-/* =======================
-   BUTTONS
-======================= */
-
-.action-btn {
-
-    border: 1px solid rgba(128,128,128,.25);
-
+.question-editor {
+    display: block;
+    width: 100%;
+    min-height: 52px;
+    overflow: hidden;
+    border: 1px solid rgba(128, 128, 128, .22);
+    border-radius: 5px;
+    padding: 6px 8px;
+    resize: none;
     background: transparent;
     color: inherit;
+    font-size: 15px;
+    line-height: 1.45;
+}
 
-    padding: 7px 11px;
+.edit-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 5px;
+}
 
-    border-radius: 6px;
-
+.action-btn {
+    border: 1px solid rgba(128, 128, 128, .25);
+    border-radius: 5px;
+    padding: 5px 9px;
+    background: transparent;
+    color: inherit;
     cursor: pointer;
+    font-size: 13px;
 }
 
-.action-btn:hover {
-
-    background:
-        rgba(128,128,128,.08);
+.action-btn:hover,
+.action-btn:focus-visible {
+    background: rgba(128, 128, 128, .1);
+    outline: none;
 }
-
 
 .actions {
-
-    margin-top: 18px;
-
-    display: flex;
-    gap: 8px;
+    margin-top: 7px;
 }
 
 .empty-message {
-
+    padding: 4px 0;
+    color: inherit;
+    font-size: 13px;
     opacity: .55;
-    font-size: 14px;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .question-body,
+    .menu-wrapper {
+        transition: none;
+    }
+}
 </style>
 </head>
 <body>
@@ -293,384 +260,291 @@ body {
 <div id="questions"></div>
 
 <div class="actions">
-
-    <button
-        class="action-btn"
-        onclick="addQuestion()">
-        + Add Question
-    </button>
-
+    <button class="action-btn" id="add-question">+ Add Question</button>
 </div>
 
 <script>
+const params = new URLSearchParams(window.location.search);
+const lessonId = params.get("id") || "default";
+const STORAGE_KEY = `lesson-${lessonId}`;
 
-const params =
-    new URLSearchParams(
-        window.location.search
-    );
+let data = loadData();
 
-const lessonId =
-    params.get("id") || "default";
+function loadData() {
+    const stored = localStorage.getItem(STORAGE_KEY);
 
-const STORAGE_KEY =
-    `lesson-${lessonId}`;
+    if (!stored) {
+        return [];
+    }
 
-let data =
-    JSON.parse(
-        localStorage.getItem(STORAGE_KEY)
-    ) || [];
+    try {
+        const parsed = JSON.parse(stored);
+
+        if (!Array.isArray(parsed)) {
+            return [];
+        }
+
+        return parsed.map(item => ({
+            question: typeof item.question === "string" ? item.question : "",
+            answer: typeof item.answer === "string" ? item.answer : "",
+            expanded: item.expanded === true
+        }));
+    } catch (error) {
+        console.error(`Unable to load lesson "${lessonId}".`, error);
+        return [];
+    }
+}
 
 function saveData() {
-
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(data)
-    );
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
-function wordCount(text) {
-
-    const trimmed =
-        text.trim();
-
-    return trimmed
-        ? trimmed.split(/\s+/).length
-        : 0;
-}
-
-function escapeHtml(text) {
-
-    const div =
-        document.createElement("div");
-
-    div.textContent =
-        text;
-
-    return div.innerHTML;
+function countWords(text) {
+    const trimmed = text.trim();
+    return trimmed ? trimmed.split(/\s+/).length : 0;
 }
 
 function closeAllMenus() {
+    document.querySelectorAll(".menu.open").forEach(menu => {
+        menu.classList.remove("open");
+        menu.closest(".menu-wrapper")?.classList.remove("menu-visible");
+    });
+}
 
-    document
-        .querySelectorAll(".menu")
-        .forEach(menu =>
-            menu.classList.remove(
-                "open"
-            )
-        );
+function autoGrow(textarea) {
+    textarea.style.height = "0px";
+    textarea.style.height = `${Math.max(textarea.scrollHeight, 24)}px`;
+}
+
+function createButton(text, className, handler) {
+    const button = document.createElement("button");
+    button.className = className;
+    button.type = "button";
+    button.textContent = text;
+    button.addEventListener("click", event => {
+        event.stopPropagation();
+        handler();
+    });
+    return button;
 }
 
 function render() {
-
-    const container =
-        document.getElementById(
-            "questions"
-        );
-
-    container.innerHTML = "";
+    const container = document.getElementById("questions");
+    container.replaceChildren();
 
     if (data.length === 0) {
-
-        container.innerHTML =
-            '<div class="empty-message">Click "Add Question" to begin.</div>';
-
+        const emptyMessage = document.createElement("div");
+        emptyMessage.className = "empty-message";
+        emptyMessage.textContent = 'Click "Add Question" to begin.';
+        container.appendChild(emptyMessage);
         return;
     }
 
-    data.forEach((item,index)=>{
+    data.forEach((item, index) => {
+        const card = document.createElement("article");
+        card.className = `question-card${item.expanded ? " expanded" : ""}`;
 
-        const card =
-            document.createElement("div");
+        const header = document.createElement("div");
+        header.className = "question-header";
 
-        card.className =
-            "question-card";
+        const display = document.createElement("div");
+        display.className = "question-display";
+        display.tabIndex = 0;
+        display.setAttribute("role", "button");
+        display.setAttribute("aria-expanded", String(item.expanded));
+        display.textContent = item.question;
+        display.addEventListener("click", () => toggleExpanded(index));
+        display.addEventListener("keydown", event => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                toggleExpanded(index);
+            }
+        });
 
-        card.innerHTML = `
+        const menuWrapper = document.createElement("div");
+        menuWrapper.className = "menu-wrapper";
 
-<div class="question-header">
+        const menuButton = createButton("⋯", "menu-button", () => {
+            const menu = menuWrapper.querySelector(".menu");
+            const willOpen = !menu.classList.contains("open");
+            closeAllMenus();
 
-    <div
-        id="display-${index}"
-        class="question-display">
-        ${escapeHtml(item.question)}
-    </div>
+            if (willOpen) {
+                menu.classList.add("open");
+                menuWrapper.classList.add("menu-visible");
+            }
+        });
+        menuButton.setAttribute("aria-label", "Question actions");
+        menuWrapper.appendChild(menuButton);
 
-    <div class="menu-wrapper">
+        const menu = document.createElement("div");
+        menu.className = "menu";
+        menu.append(
+            createButton("Edit", "menu-item", () => startEdit(index)),
+            createButton("Duplicate", "menu-item", () => duplicateQuestion(index)),
+            createButton("Move Up", "menu-item", () => moveUp(index)),
+            createButton("Move Down", "menu-item", () => moveDown(index)),
+            createButton("Delete", "menu-item", () => deleteQuestion(index))
+        );
+        menuWrapper.appendChild(menu);
 
-        <button
-            class="menu-button"
-            onclick="toggleMenu(event,${index})">
-            ⋯
-        </button>
+        header.append(display, menuWrapper);
 
-        <div
-            id="menu-${index}"
-            class="menu">
+        const editContainer = document.createElement("div");
+        editContainer.className = "question-edit-container";
 
-            <button
-                class="menu-item"
-                onclick="startEdit(${index})">
-                Edit Question
-            </button>
+        const editor = document.createElement("textarea");
+        editor.className = "question-editor";
+        editor.value = item.question;
+        editor.setAttribute("aria-label", "Edit question");
 
-            <button
-                class="menu-item"
-                onclick="duplicateQuestion(${index})">
-                Duplicate
-            </button>
+        const editActions = document.createElement("div");
+        editActions.className = "edit-actions";
+        editActions.append(
+            createButton("Save", "action-btn", () => saveQuestion(index)),
+            createButton("Cancel", "action-btn", () => cancelEdit(index))
+        );
+        editContainer.append(editor, editActions);
 
-            <button
-                class="menu-item"
-                onclick="moveUp(${index})">
-                Move Up
-            </button>
+        const body = document.createElement("div");
+        body.className = "question-body";
 
-            <button
-                class="menu-item"
-                onclick="moveDown(${index})">
-                Move Down
-            </button>
+        const bodyInner = document.createElement("div");
+        bodyInner.className = "question-body-inner";
 
-            <button
-                class="menu-item"
-                onclick="deleteQuestion(${index})">
-                Delete
-            </button>
+        const answer = document.createElement("textarea");
+        answer.className = "answer-box";
+        answer.placeholder = "Type your answer here...";
+        answer.value = item.answer;
+        answer.setAttribute("aria-label", "Answer");
+        answer.addEventListener("input", event => {
+            updateAnswer(index, event.target.value);
+            autoGrow(answer);
+        });
 
-        </div>
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        meta.textContent = `${countWords(item.answer)} words`;
 
-    </div>
-
-</div>
-
-<div
-    id="edit-${index}"
-    class="question-edit-container">
-
-    <textarea
-        id="input-${index}"
-        class="question-editor"
-    >${escapeHtml(item.question)}</textarea>
-
-    <div class="edit-actions">
-
-        <button
-            class="action-btn"
-            onclick="saveQuestion(${index})">
-            Save
-        </button>
-
-        <button
-            class="action-btn"
-            onclick="cancelEdit(${index})">
-            Cancel
-        </button>
-
-    </div>
-
-</div>
-
-<textarea
-    class="answer-box"
-    placeholder="Type your answer here..."
-    oninput="updateAnswer(${index}, this.value)"
->${escapeHtml(item.answer)}</textarea>
-
-<div class="meta">
-    ${wordCount(item.answer)} words
-</div>
-
-<div class="separator"></div>
-
-`;
-
+        bodyInner.append(answer, meta);
+        body.appendChild(bodyInner);
+        card.append(header, editContainer, body);
         container.appendChild(card);
+
+        autoGrow(answer);
     });
-
 }
 
-function toggleMenu(event,index){
-
-    event.stopPropagation();
-
-    const menu =
-        document.getElementById(
-            `menu-${index}`
-        );
-
-    const isOpen =
-        menu.classList.contains(
-            "open"
-        );
-
+function toggleExpanded(index) {
     closeAllMenus();
-
-    if (!isOpen) {
-        menu.classList.add("open");
-    }
-}
-
-function startEdit(index){
-
-    closeAllMenus();
-
-    document.getElementById(
-        `display-${index}`
-    ).style.display =
-        "none";
-
-    document.getElementById(
-        `edit-${index}`
-    ).style.display =
-        "block";
-}
-
-function saveQuestion(index){
-
-    const value =
-        document
-            .getElementById(
-                `input-${index}`
-            )
-            .value
-            .trim();
-
-    if (!value) return;
-
-    data[index].question =
-        value;
-
+    data[index].expanded = !data[index].expanded;
     saveData();
-
-    closeAllMenus();
-
     render();
 }
 
-function cancelEdit(index){
-
+function startEdit(index) {
     closeAllMenus();
 
+    const card = document.querySelectorAll(".question-card")[index];
+    const display = card.querySelector(".question-display");
+    const editContainer = card.querySelector(".question-edit-container");
+    const editor = card.querySelector(".question-editor");
+
+    display.style.display = "none";
+    editContainer.style.display = "block";
+    editor.focus();
+    editor.select();
+}
+
+function saveQuestion(index) {
+    const card = document.querySelectorAll(".question-card")[index];
+    const value = card.querySelector(".question-editor").value.trim();
+
+    if (!value) {
+        return;
+    }
+
+    data[index].question = value;
+    saveData();
+    closeAllMenus();
     render();
 }
 
-function updateAnswer(index,value){
-
-    data[index].answer =
-        value;
-
-    saveData();
-
-    const metas =
-        document.querySelectorAll(
-            ".meta"
-        );
-
-    if (metas[index]) {
-
-        metas[index].textContent =
-            `${wordCount(value)} words`;
-    }
+function cancelEdit(index) {
+    closeAllMenus();
+    render();
 }
 
-function addQuestion(){
+function updateAnswer(index, value) {
+    data[index].answer = value;
+    saveData();
 
+    const card = document.querySelectorAll(".question-card")[index];
+    card.querySelector(".meta").textContent = `${countWords(value)} words`;
+}
+
+function addQuestion() {
     data.push({
         question: "New Question",
-        answer: ""
+        answer: "",
+        expanded: true
     });
-
     saveData();
-
     render();
-
-    startEdit(
-        data.length - 1
-    );
+    startEdit(data.length - 1);
 }
 
-function deleteQuestion(index){
+function deleteQuestion(index) {
+    closeAllMenus();
+    data.splice(index, 1);
+    saveData();
+    render();
+}
 
+function duplicateQuestion(index) {
+    closeAllMenus();
+    data.splice(index + 1, 0, {
+        question: data[index].question,
+        answer: data[index].answer,
+        expanded: false
+    });
+    saveData();
+    render();
+}
+
+function moveUp(index) {
     closeAllMenus();
 
-    if (
-        !confirm(
-            "Delete this question?"
-        )
-    ) return;
+    if (index === 0) {
+        return;
+    }
 
-    data.splice(index,1);
-
+    [data[index - 1], data[index]] = [data[index], data[index - 1]];
     saveData();
     render();
 }
 
-function duplicateQuestion(index){
-
+function moveDown(index) {
     closeAllMenus();
 
-    data.splice(
-        index + 1,
-        0,
-        {
-            question:
-                data[index].question,
-            answer:
-                data[index].answer
-        }
-    );
+    if (index >= data.length - 1) {
+        return;
+    }
 
+    [data[index], data[index + 1]] = [data[index + 1], data[index]];
     saveData();
     render();
 }
 
-function moveUp(index){
+document.getElementById("add-question").addEventListener("click", addQuestion);
 
-    closeAllMenus();
-
-    if (index === 0) return;
-
-    [
-        data[index],
-        data[index-1]
-    ] =
-    [
-        data[index-1],
-        data[index]
-    ];
-
-    saveData();
-    render();
-}
-
-function moveDown(index){
-
-    closeAllMenus();
-
-    if (
-        index >= data.length - 1
-    ) return;
-
-    [
-        data[index],
-        data[index+1]
-    ] =
-    [
-        data[index+1],
-        data[index]
-    ];
-
-    saveData();
-    render();
-}
-
-document.addEventListener(
-    "click",
-    closeAllMenus
-);
+document.addEventListener("click", event => {
+    if (!event.target.closest(".menu-wrapper")) {
+        closeAllMenus();
+    }
+});
 
 render();
-
 </script>
 
 </body>
