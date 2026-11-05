@@ -193,13 +193,6 @@ textarea {
     display: block;
 }
 
-.correct-label {
-    display: block;
-    margin-bottom: 1px;
-    font-size: 12px;
-    opacity: .55;
-}
-
 .edit-container,
 .editor-panel {
     display: none;
@@ -462,13 +455,9 @@ function render() {
     const correctAnswer = document.createElement("div");
     correctAnswer.className = `correct-answer${item.showCorrectAnswer ? " visible" : ""}`;
 
-    const correctLabel = document.createElement("span");
-    correctLabel.className = "correct-label";
-    correctLabel.textContent = "Correct Answer:";
-
     const correctText = document.createElement("span");
     correctText.textContent = item.correctAnswer;
-    correctAnswer.append(correctLabel, correctText);
+    correctAnswer.appendChild(correctText);
     answerArea.append(answer, correctToggle, correctAnswer);
 
     const navigation = document.createElement("nav");
