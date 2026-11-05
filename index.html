@@ -469,10 +469,18 @@ function render() {
         ...(mode === "practice"
             ? [createButton("Edit Section", "menu-item", () => startEdit("section"))]
             : []),
-        createButton("Duplicate Question", "menu-item", duplicateQuestion),
+        createButton(
+            mode === "practice" ? "Duplicate Problem" : "Duplicate Question",
+            "menu-item",
+            duplicateQuestion
+        ),
         createButton("Move Up", "menu-item", () => moveQuestion(-1)),
         createButton("Move Down", "menu-item", () => moveQuestion(1)),
-        createButton("Delete Question", "menu-item", deleteQuestion)
+        createButton(
+            mode === "practice" ? "Delete Problem" : "Delete Question",
+            "menu-item",
+            deleteQuestion
+        )
     );
 
     menuWrapper.append(menuButton, menu);
