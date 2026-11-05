@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+
 :root {
     color-scheme: light dark;
 }
@@ -28,18 +29,103 @@ body {
 
     background: transparent;
     color: inherit;
+
+    padding: 10px;
 }
 
-textarea {
+/* =========================
+   QUESTION
+========================= */
+
+.question-wrapper {
+    margin-bottom: 24px;
+}
+
+.question-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 6px;
+}
+
+.icon-btn {
+    border: none;
+    background: transparent;
+    color: inherit;
+
+    cursor: pointer;
+
+    opacity: .35;
+
+    font-size: 13px;
+
+    transition: opacity .15s;
+}
+
+.question-wrapper:hover .icon-btn {
+    opacity: .75;
+}
+
+.icon-btn:hover {
+    opacity: 1;
+}
+
+.question-display {
+    font-size: 16px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+.question-editor {
+    display: none;
+}
+
+.question-editor textarea {
+    width: 100%;
+    min-height: 120px;
+
+    border: 1px solid rgba(128,128,128,.25);
+    border-radius: 8px;
+
+    padding: 10px;
+
+    background: transparent;
+    color: inherit;
+
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.6;
+
+    resize: vertical;
+}
+
+.save-question-btn {
+    margin-top: 10px;
+
+    border: 1px solid rgba(128,128,128,.3);
+    border-radius: 6px;
+
+    background: transparent;
+    color: inherit;
+
+    padding: 6px 12px;
+
+    cursor: pointer;
+}
+
+/* =========================
+   ANSWER
+========================= */
+
+.answer-section {
+    margin-top: 10px;
+}
+
+.answer-box {
     width: 100%;
     min-height: 250px;
 
-    padding: 12px 0;
-
     border: none;
     outline: none;
-
-    resize: vertical;
 
     background: transparent;
     color: inherit;
@@ -47,83 +133,120 @@ textarea {
     font-size: 16px;
     line-height: 1.7;
 
+    resize: vertical;
+
     font-family: inherit;
 }
 
-textarea::placeholder {
-    opacity: 0.5;
+.answer-box::placeholder {
+    opacity: .5;
 }
 
-textarea:focus {
-    outline: none;
-}
+/* =========================
+   FOOTER
+========================= */
 
 .toolbar {
+    margin-top: 12px;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    margin-top: 8px;
+    flex-wrap: wrap;
+    gap: 12px;
 
     font-size: 13px;
-    opacity: 0.7;
-
-    gap: 12px;
-    flex-wrap: wrap;
+    opacity: .7;
 }
 
-.left {
+.stats {
     display: flex;
     gap: 16px;
 }
 
-.right {
+.controls {
     display: flex;
     gap: 8px;
 }
 
 button {
-    border: 1px solid rgba(128,128,128,0.3);
     background: transparent;
     color: inherit;
 
+    border: 1px solid rgba(128,128,128,.35);
     border-radius: 6px;
 
-    padding: 4px 10px;
+    padding: 5px 10px;
 
     cursor: pointer;
-
-    font-size: 12px;
 }
 
 button:hover {
-    opacity: 0.8;
+    opacity: .85;
 }
 
-.saved {
-    opacity: 0.7;
-}
 </style>
-</head>
 
+</head>
 <body>
 
-<textarea
-    id="answer"
-    placeholder="Type your answer here..."
-></textarea>
+<!-- QUESTION -->
+
+<div class="question-wrapper">
+
+    <div class="question-header">
+        <button id="editQuestionBtn" class="icon-btn">
+            ✏️ Edit Question
+        </button>
+    </div>
+
+    <div id="questionDisplay" class="question-display">
+        Click "Edit Question" to add a question.
+    </div>
+
+    <div id="questionEditor" class="question-editor">
+
+        <textarea
+            id="questionInput"
+            placeholder="Paste your question here..."
+        ></textarea>
+
+        <button
+            id="saveQuestionBtn"
+            class="save-question-btn">
+            Save Question
+        </button>
+
+    </div>
+
+</div>
+
+<!-- ANSWER -->
+
+<div class="answer-section">
+
+    <textarea
+        id="answer"
+        class="answer-box"
+        placeholder="Type your answer here..."
+    ></textarea>
+
+</div>
+
+<!-- FOOTER -->
 
 <div class="toolbar">
 
-    <div class="left">
+    <div class="stats">
         <span id="wordCount">0 words</span>
         <span id="charCount">0 characters</span>
-        <span class="saved" id="saveStatus">Saved</span>
+        <span id="status">Saved</span>
     </div>
 
-    <div class="right">
-        <button id="clearBtn">
-            Clear
+    <div class="controls">
+        <button id="clearAnswerBtn">
+            Clear Answer
         </button>
     </div>
 
@@ -131,18 +254,41 @@ button:hover {
 
 <script>
 
-// URL example:
-// ?id=binary-001
+// ====================================
+// QUESTION ID
+// ====================================
 
 const params = new URLSearchParams(window.location.search);
 
-const questionId =
+const lessonId =
     params.get("id") || "default";
 
-const STORAGE_KEY =
-    `study-answer-${questionId}`;
+const QUESTION_KEY =
+    `study-question-${lessonId}`;
 
-const box =
+const ANSWER_KEY =
+    `study-answer-${lessonId}`;
+
+// ====================================
+// ELEMENTS
+// ====================================
+
+const questionDisplay =
+    document.getElementById("questionDisplay");
+
+const questionEditor =
+    document.getElementById("questionEditor");
+
+const questionInput =
+    document.getElementById("questionInput");
+
+const editQuestionBtn =
+    document.getElementById("editQuestionBtn");
+
+const saveQuestionBtn =
+    document.getElementById("saveQuestionBtn");
+
+const answerBox =
     document.getElementById("answer");
 
 const wordCount =
@@ -151,66 +297,130 @@ const wordCount =
 const charCount =
     document.getElementById("charCount");
 
-const saveStatus =
-    document.getElementById("saveStatus");
+const status =
+    document.getElementById("status");
 
-const clearBtn =
-    document.getElementById("clearBtn");
+const clearAnswerBtn =
+    document.getElementById("clearAnswerBtn");
 
-box.value =
-    localStorage.getItem(STORAGE_KEY)
-    || "";
+// ====================================
+// QUESTION LOAD
+// ====================================
+
+const savedQuestion =
+    localStorage.getItem(QUESTION_KEY);
+
+if (savedQuestion) {
+    questionDisplay.textContent =
+        savedQuestion;
+    questionInput.value =
+        savedQuestion;
+}
+
+// ====================================
+// QUESTION EDIT
+// ====================================
+
+editQuestionBtn.addEventListener("click", () => {
+
+    questionEditor.style.display =
+        "block";
+
+    questionDisplay.style.display =
+        "none";
+});
+
+saveQuestionBtn.addEventListener("click", () => {
+
+    const q =
+        questionInput.value.trim();
+
+    if (!q) return;
+
+    localStorage.setItem(
+        QUESTION_KEY,
+        q
+    );
+
+    questionDisplay.textContent = q;
+
+    questionDisplay.style.display =
+        "block";
+
+    questionEditor.style.display =
+        "none";
+});
+
+// ====================================
+// ANSWER LOAD
+// ====================================
+
+answerBox.value =
+    localStorage.getItem(ANSWER_KEY) || "";
+
+// ====================================
+// STATS
+// ====================================
 
 function updateStats() {
 
-    const text = box.value.trim();
+    const trimmed =
+        answerBox.value.trim();
 
     const words =
-        text.length === 0
-        ? 0
-        : text.split(/\s+/).length;
+        trimmed
+        ? trimmed.split(/\s+/).length
+        : 0;
 
     wordCount.textContent =
         `${words} words`;
 
     charCount.textContent =
-        `${box.value.length} characters`;
+        `${answerBox.value.length} characters`;
 }
 
-function save() {
+function saveAnswer() {
 
     localStorage.setItem(
-        STORAGE_KEY,
-        box.value
+        ANSWER_KEY,
+        answerBox.value
     );
 
     updateStats();
 
     const now = new Date();
 
-    saveStatus.textContent =
-        "Saved " +
-        now.toLocaleTimeString([], {
+    status.textContent =
+        `Saved ${now.toLocaleTimeString([], {
             hour: "numeric",
             minute: "2-digit"
-        });
+        })}`;
 }
 
-box.addEventListener("input", save);
+answerBox.addEventListener(
+    "input",
+    saveAnswer
+);
 
-clearBtn.addEventListener("click", () => {
+// ====================================
+// CLEAR
+// ====================================
 
-    box.value = "";
+clearAnswerBtn.addEventListener("click", () => {
+
+    answerBox.value = "";
 
     localStorage.removeItem(
-        STORAGE_KEY
+        ANSWER_KEY
     );
 
     updateStats();
 
-    saveStatus.textContent =
-        "Cleared";
+    status.textContent =
+        "Answer Cleared";
 });
+
+// ====================================
 
 updateStats();
 
