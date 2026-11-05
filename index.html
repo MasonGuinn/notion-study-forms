@@ -460,7 +460,11 @@ function render() {
     const menu = document.createElement("div");
     menu.className = "menu";
     menu.append(
-        createButton("Edit Question", "menu-item", () => startEdit("question")),
+        createButton(
+            mode === "practice" ? "Edit Problem" : "Edit Question",
+            "menu-item",
+            () => startEdit("question")
+        ),
         createButton("Edit Correct Answer", "menu-item", () => startEdit("correctAnswer")),
         ...(mode === "practice"
             ? [createButton("Edit Section", "menu-item", () => startEdit("section"))]
