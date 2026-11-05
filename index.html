@@ -439,10 +439,6 @@ function render() {
         () => saveEdit("correctAnswer")
     );
 
-    const editContainer = document.createElement("div");
-    editContainer.className = "edit-container";
-    editContainer.append(questionEditor.container, correctEditor.container);
-
     const answerArea = document.createElement("div");
     answerArea.className = "answer-area";
 
@@ -484,7 +480,14 @@ function render() {
     navigation.children[0].disabled = currentIndex === 0;
     navigation.children[1].disabled = currentIndex === data.length - 1;
 
-    card.append(progress, questionRow, editContainer, answerArea, navigation);
+    card.append(
+        progress,
+        questionRow,
+        questionEditor.container,
+        correctEditor.container,
+        answerArea,
+        navigation
+    );
     container.appendChild(card);
     document.getElementById("add-question").hidden = false;
     autoGrow(answer);
