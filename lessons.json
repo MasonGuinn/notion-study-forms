@@ -113,6 +113,36 @@
       "showCorrectAnswer": false
     }
   ],
+  "systems-02-lab": [
+    {
+      "question": "Convert each of these binary values to decimal and to hex, showing your place values and grouping: 10110100, 01001111, 11110000.",
+      "answer": "",
+      "correctAnswer": "10110100 = 128 + 32 + 16 + 4 = 180, grouped 1011 0100 = 0xB4. 01001111 = 64 + 8 + 4 + 2 + 1 = 79, grouped 0100 1111 = 0x4F. 11110000 = 128 + 64 + 32 + 16 = 240, grouped 1111 0000 = 0xF0.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Convert each of these decimal values to binary and to hex, showing your subtraction and grouping: 42, 180, 255.",
+      "answer": "",
+      "correctAnswer": "42 = 00101010 = 0x2A (32 + 8 + 2). 180 = 10110100 = 0xB4 (128 + 32 + 16 + 4). 255 = 11111111 = 0xFF (128 + 64 + 32 + 16 + 8 + 4 + 2 + 1).",
+      "section": "Main",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "A student converts 0x2F to decimal as 35, and converts binary 110101 to hex as 0xD1 by grouping from the left. Find both errors and give the right answers.",
+      "answer": "",
+      "correctAnswer": "0x2F: the 2 is in the 16s place, not the 10s place, so 2 times 16 plus 15 is 47, not 35. 110101: grouping must start from the right, with the leftmost group padded to four bits. From the right, 11 0101 pads to 0011 0101, which is 3 and 5, so 0x35, not 0xD1. Check: 110101 is 32 + 16 + 4 + 1 = 53, and 0x35 is 3 times 16 plus 5 = 53.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Convert 0x1A3F to binary and to decimal. Then continue counting in hex from 0xFE: FE, FF, __, __.",
+      "answer": "",
+      "correctAnswer": "0x1A3F = 0001 1010 0011 1111 = 0001101000111111 in binary, and 1 times 4096 plus 10 times 256 plus 3 times 16 plus 15 = 6719 in decimal. Counting on from 0xFE: FE, FF, 100, 101, because 0xFF is 255 and the next value rolls over to 0x100, which is 256.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
   "systems-03": [
     {
       "question": "In your own words, why can the same bit pattern mean a letter in one program and a number in another?",
