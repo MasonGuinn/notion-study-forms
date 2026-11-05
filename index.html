@@ -566,6 +566,8 @@ function navigate(offset) {
 
     closeMenu();
     currentIndex = nextIndex;
+    data[currentIndex].showCorrectAnswer = false;
+    saveData();
     saveCurrentIndex();
     render();
 }
