@@ -1,4 +1,72 @@
 {
+  "systems-02": [
+    {
+      "question": "Explain, in your own words, why a computer uses binary and why humans use hex to read it.",
+      "answer": "",
+      "correctAnswer": "Binary is the only system hardware can build reliably from two states; hex is binary grouped in fours, so one digit is exactly four bits and a byte is two digits, compact to read, exact to convert.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Predict what happens when you try to store 300 in an 8-bit unsigned field. What about 256?",
+      "answer": "",
+      "correctAnswer": "300 wraps to 44 in 8-bit unsigned (300 - 256); 256 wraps to 0.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "What is 11111111 as an 8-bit unsigned value, and what is it as an 8-bit signed value? Why are they different?",
+      "answer": "",
+      "correctAnswer": "11111111 = 255 unsigned, -1 signed; only the reading rule changes.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Convert 0x3C to binary and to decimal, showing your grouping.",
+      "answer": "",
+      "correctAnswer": "0x3C = 00111100 = 60. Grouping: 3 = 0011, C = 1100.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Convert 200 in decimal to binary and to hex, showing your subtraction and grouping.",
+      "answer": "",
+      "correctAnswer": "200 = 11001000 = 0xC8. Grouping: 1100 = C, 1000 = 8.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Interpret 10000001 and 11110000 as 8-bit signed values, using invert-and-add-1.",
+      "answer": "",
+      "correctAnswer": "10000001 signed = -127; 11110000 signed = -16.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Connect this lesson to Lesson 01: how does representing data as patterns make sharing data between machines possible?",
+      "answer": "",
+      "correctAnswer": "If both machines agree on the grouping and reading rule (the encoding), a pattern sent by one can be decoded by the other, that shared agreement is what makes files, networks, and programs portable.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Sign extension: widen the 8-bit signed value 11111011 to 16 bits. What do you get, and why is padding with zeros wrong here?",
+      "answer": "",
+      "correctAnswer": "11111011 (-5) extended to 16 bits = 1111111111111011 = 0xFFFB; padding with zeros would give 0x00FB = +251, which changes the value.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Signed overflow: what is 01111111 + 00000001 in 8-bit signed arithmetic, and why does the answer look wrong?",
+      "answer": "",
+      "correctAnswer": "01111111 + 00000001 = 10000000 = -128 in 8-bit signed: the addition wrapped past +127.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Bitwise: what is 0xA5 & 0x0F, and what is (0xA5 >> 4) & 0x0F? In plain words, what is the mask doing in each case?",
+      "answer": "",
+      "correctAnswer": "0xA5 & 0x0F = 0x05 (low nibble); (0xA5 >> 4) & 0x0F = 0x0A (high nibble). The mask keeps only the nibble you asked for.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Using the history in Why This Exists, explain in your own words why binary hardware won over decimal hardware, and why the byte settled at 8 bits rather than 10.",
+      "answer": "",
+      "correctAnswer": "Two states are the most reliable thing to build, a decimal digit would need ten distinguishable levels, fragile to noise. Shannon showed Boolean logic could be built as switching circuits, so binary logic became cheap hardware. The byte settled at 8 bits because that size, helped to dominance by IBM's System/360, held a 7-bit ASCII character with a spare bit, gave 256 values, and is exactly two hex digits.",
+      "showCorrectAnswer": false
+    }
+  ],
   "systems-03": [
     {
       "question": "In your own words, why can the same bit pattern mean a letter in one program and a number in another?",
