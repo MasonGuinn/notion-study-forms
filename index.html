@@ -53,6 +53,19 @@ textarea {
     opacity: .55;
 }
 
+.section-header {
+    display: none;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(128, 128, 128, .18);
+    padding-bottom: 4px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.practice .section-header {
+    display: block;
+}
+
 .question-row {
     position: relative;
     min-height: 28px;
@@ -301,6 +314,9 @@ function normalizeItem(item) {
         correctAnswer: typeof existing.correctAnswer === "string"
             ? existing.correctAnswer
             : "",
+        section: typeof existing.section === "string" && existing.section.trim()
+            ? existing.section.trim()
+            : "Warm-up",
         showCorrectAnswer: existing.showCorrectAnswer === true
     };
 }
@@ -314,7 +330,22 @@ function loadData() {
 
     try {
         const parsed = JSON.parse(stored);
-        return Array.isArray(parsed) ? parsed.map(normalizeItem) : [];
+        if (!Array.isArray(parsed)) {
+            return [];
+        }
+
+        const normalized = parsed.map(normalizeItem);
+        const requiresMigration = parsed.some(item =>
+            !item ||
+            typeof item.section !== "string" ||
+            !item.section.trim()
+        );
+
+        if (requiresMigration) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+        }
+
+        return normalized;
     } catch (error) {
         console.error(`Unable to load lesson "${lessonId}".`, error);
         return [];
@@ -385,11 +416,24 @@ function render() {
 
     const item = data[currentIndex];
     const card = document.createElement("section");
-    card.className = "flashcard";
+    card.className = `flashcard${mode === "practice" ? " practice" : ""}`;
+
+    if (mode === "practice") {
+        const sectionHeader = document.createElement("div");
+        sectionHeader.className = "section-header";
+        sectionHeader.textContent = item.section;
+        card.appendChild(sectionHeader);
+    }
 
     const progress = document.createElement("div");
     progress.className = "progress";
-    progress.textContent = `${itemLabel} ${currentIndex + 1} of ${data.length}`;
+    const sectionItems = mode === "practice"
+        ? data.filter(candidate => candidate.section === item.section)
+        : data;
+    const sectionPosition = sectionItems.indexOf(item) + 1;
+    progress.textContent = `${itemLabel} ${
+        mode === "practice" ? sectionPosition : currentIndex + 1
+    } of ${mode === "practice" ? sectionItems.length : data.length}`;
 
     const questionRow = document.createElement("div");
     questionRow.className = "question-row";
@@ -418,6 +462,9 @@ function render() {
     menu.append(
         createButton("Edit Question", "menu-item", () => startEdit("question")),
         createButton("Edit Correct Answer", "menu-item", () => startEdit("correctAnswer")),
+        ...(mode === "practice"
+            ? [createButton("Edit Section", "menu-item", () => startEdit("section"))]
+            : []),
         createButton("Duplicate Question", "menu-item", duplicateQuestion),
         createButton("Move Up", "menu-item", () => moveQuestion(-1)),
         createButton("Move Down", "menu-item", () => moveQuestion(1)),
@@ -430,12 +477,20 @@ function render() {
     const questionEditor = createEditor(
         item.question,
         "Edit question",
+        "question",
         () => saveEdit("question")
     );
     const correctEditor = createEditor(
         item.correctAnswer,
         "Edit correct answer",
+        "correctAnswer",
         () => saveEdit("correctAnswer")
+    );
+    const sectionEditor = createEditor(
+        item.section,
+        "Edit section",
+        "section",
+        () => saveEdit("section")
     );
 
     const answerArea = document.createElement("div");
@@ -490,6 +545,7 @@ function render() {
         questionRow,
         questionEditor.container,
         correctEditor.container,
+        ...(mode === "practice" ? [sectionEditor.container] : []),
         answerArea,
         navigation
     );
@@ -497,9 +553,10 @@ function render() {
     autoGrow(answer);
 }
 
-function createEditor(value, label, saveHandler) {
+function createEditor(value, label, field, saveHandler) {
     const container = document.createElement("div");
     container.className = "editor-panel";
+    container.dataset.field = field;
 
     const editor = document.createElement("textarea");
     editor.className = "inline-editor";
@@ -523,26 +580,26 @@ function startEdit(type) {
     closeMenu();
 
     const card = document.querySelector(".flashcard");
-    const editorContainers = card.querySelectorAll(".editor-panel");
-    const editorIndex = type === "question" ? 0 : 1;
-    const container = editorContainers[editorIndex];
+    const container = card.querySelector(`.editor-panel[data-field="${type}"]`);
     const editor = container.querySelector("textarea");
 
     card.querySelector(".question-row").hidden = true;
     card.querySelector(".answer-area").hidden = true;
     card.querySelector(".navigation").hidden = true;
     container.classList.add("visible");
+    autoGrow(editor);
     editor.focus();
     editor.select();
 }
 
 function saveEdit(type) {
     const card = document.querySelector(".flashcard");
-    const editorContainers = card.querySelectorAll(".editor-panel");
-    const editorIndex = type === "question" ? 0 : 1;
-    const value = editorContainers[editorIndex].querySelector("textarea").value.trim();
+    const value = card
+        .querySelector(`.editor-panel[data-field="${type}"] textarea`)
+        .value
+        .trim();
 
-    if (type === "question" && !value) {
+    if ((type === "question" || type === "section") && !value) {
         return;
     }
 
@@ -584,6 +641,7 @@ function addQuestion() {
         question: `New ${itemLabel}`,
         answer: "",
         correctAnswer: "",
+        section: "Warm-up",
         showCorrectAnswer: false
     });
     currentIndex = data.length - 1;
@@ -599,6 +657,7 @@ function duplicateQuestion() {
         question: data[currentIndex].question,
         answer: data[currentIndex].answer,
         correctAnswer: data[currentIndex].correctAnswer,
+        section: data[currentIndex].section,
         showCorrectAnswer: false
     };
     data.splice(currentIndex + 1, 0, copy);
