@@ -34,6 +34,10 @@ textarea {
     font: inherit;
 }
 
+textarea {
+    overflow: hidden;
+}
+
 #questions {
     display: flex;
     flex-direction: column;
@@ -166,11 +170,14 @@ textarea {
     padding-left: 16px;
 }
 
+.question-body-inner > * {
+    max-width: 100%;
+}
+
 .answer-box {
     display: block;
     width: 100%;
     min-height: 24px;
-    height: 24px;
     margin: 0;
     overflow: hidden;
     border: 0;
@@ -185,6 +192,68 @@ textarea {
 
 .answer-box::placeholder {
     opacity: .4;
+}
+
+.correct-toggle {
+    display: block;
+    border: 0;
+    padding: 2px 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: .55;
+}
+
+.correct-toggle:hover,
+.correct-toggle:focus-visible {
+    opacity: .9;
+    outline: none;
+    text-decoration: underline;
+}
+
+.correct-answer {
+    display: none;
+    margin: 2px 0 4px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.correct-answer.visible {
+    display: block;
+}
+
+.correct-label {
+    display: block;
+    margin-bottom: 1px;
+    font-size: 12px;
+    opacity: .55;
+}
+
+.correct-editor-container {
+    display: none;
+    padding: 3px 0 5px;
+}
+
+.correct-editor-container.visible {
+    display: block;
+}
+
+.correct-editor {
+    display: block;
+    width: 100%;
+    min-height: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(128, 128, 128, .22);
+    border-radius: 5px;
+    padding: 5px 7px;
+    resize: none;
+    background: transparent;
+    color: inherit;
+    font-size: 14px;
+    line-height: 1.45;
 }
 
 .meta {
@@ -202,7 +271,7 @@ textarea {
 .question-editor {
     display: block;
     width: 100%;
-    min-height: 52px;
+    min-height: 24px;
     overflow: hidden;
     border: 1px solid rgba(128, 128, 128, .22);
     border-radius: 5px;
@@ -287,7 +356,11 @@ function loadData() {
         return parsed.map(item => ({
             question: typeof item.question === "string" ? item.question : "",
             answer: typeof item.answer === "string" ? item.answer : "",
-            expanded: item.expanded === true
+            correctAnswer: typeof item.correctAnswer === "string"
+                ? item.correctAnswer
+                : "",
+            expanded: item.expanded === true,
+            showCorrectAnswer: item.showCorrectAnswer === true
         }));
     } catch (error) {
         console.error(`Unable to load lesson "${lessonId}".`, error);
@@ -380,7 +453,8 @@ function render() {
         const menu = document.createElement("div");
         menu.className = "menu";
         menu.append(
-            createButton("Edit", "menu-item", () => startEdit(index)),
+            createButton("Edit Question", "menu-item", () => startEdit(index)),
+            createButton("Edit Correct Answer", "menu-item", () => startCorrectEdit(index)),
             createButton("Duplicate", "menu-item", () => duplicateQuestion(index)),
             createButton("Move Up", "menu-item", () => moveUp(index)),
             createButton("Move Down", "menu-item", () => moveDown(index)),
@@ -397,6 +471,7 @@ function render() {
         editor.className = "question-editor";
         editor.value = item.question;
         editor.setAttribute("aria-label", "Edit question");
+        editor.addEventListener("input", () => autoGrow(editor));
 
         const editActions = document.createElement("div");
         editActions.className = "edit-actions";
@@ -422,16 +497,59 @@ function render() {
             autoGrow(answer);
         });
 
+        const correctToggle = createButton(
+            item.showCorrectAnswer ? "Hide Correct Answer" : "Show Correct Answer",
+            "correct-toggle",
+            () => toggleCorrectAnswer(index)
+        );
+
+        const correctAnswer = document.createElement("div");
+        correctAnswer.className = `correct-answer${item.showCorrectAnswer ? " visible" : ""}`;
+
+        const correctLabel = document.createElement("span");
+        correctLabel.className = "correct-label";
+        correctLabel.textContent = "Correct Answer:";
+
+        const correctText = document.createElement("span");
+        correctText.textContent = item.correctAnswer;
+        correctAnswer.append(correctLabel, correctText);
+
+        const correctEditorContainer = document.createElement("div");
+        correctEditorContainer.className = "correct-editor-container";
+
+        const correctEditor = document.createElement("textarea");
+        correctEditor.className = "correct-editor";
+        correctEditor.value = item.correctAnswer;
+        correctEditor.setAttribute("aria-label", "Edit correct answer");
+        correctEditor.addEventListener("input", () => autoGrow(correctEditor));
+
+        const correctEditActions = document.createElement("div");
+        correctEditActions.className = "edit-actions";
+        correctEditActions.append(
+            createButton("Save", "action-btn", () => saveCorrectAnswer(index)),
+            createButton("Cancel", "action-btn", () => cancelCorrectEdit(index))
+        );
+
+        correctEditorContainer.append(correctEditor, correctEditActions);
+
         const meta = document.createElement("div");
         meta.className = "meta";
         meta.textContent = `${countWords(item.answer)} words`;
 
-        bodyInner.append(answer, meta);
+        bodyInner.append(
+            answer,
+            correctToggle,
+            correctAnswer,
+            correctEditorContainer,
+            meta
+        );
         body.appendChild(bodyInner);
         card.append(header, editContainer, body);
         container.appendChild(card);
 
         autoGrow(answer);
+        autoGrow(editor);
+        autoGrow(correctEditor);
     });
 }
 
@@ -456,6 +574,21 @@ function startEdit(index) {
     editor.select();
 }
 
+function startCorrectEdit(index) {
+    closeAllMenus();
+    data[index].expanded = true;
+    saveData();
+    render();
+
+    const card = document.querySelectorAll(".question-card")[index];
+    const editorContainer = card.querySelector(".correct-editor-container");
+    const editor = card.querySelector(".correct-editor");
+
+    editorContainer.classList.add("visible");
+    editor.focus();
+    editor.select();
+}
+
 function saveQuestion(index) {
     const card = document.querySelectorAll(".question-card")[index];
     const value = card.querySelector(".question-editor").value.trim();
@@ -470,7 +603,22 @@ function saveQuestion(index) {
     render();
 }
 
+function saveCorrectAnswer(index) {
+    const card = document.querySelectorAll(".question-card")[index];
+    const editor = card.querySelector(".correct-editor");
+
+    data[index].correctAnswer = editor.value.trim();
+    saveData();
+    closeAllMenus();
+    render();
+}
+
 function cancelEdit(index) {
+    closeAllMenus();
+    render();
+}
+
+function cancelCorrectEdit(index) {
     closeAllMenus();
     render();
 }
@@ -483,11 +631,20 @@ function updateAnswer(index, value) {
     card.querySelector(".meta").textContent = `${countWords(value)} words`;
 }
 
+function toggleCorrectAnswer(index) {
+    closeAllMenus();
+    data[index].showCorrectAnswer = !data[index].showCorrectAnswer;
+    saveData();
+    render();
+}
+
 function addQuestion() {
     data.push({
         question: "New Question",
         answer: "",
-        expanded: true
+        correctAnswer: "",
+        expanded: false,
+        showCorrectAnswer: false
     });
     saveData();
     render();
@@ -506,7 +663,9 @@ function duplicateQuestion(index) {
     data.splice(index + 1, 0, {
         question: data[index].question,
         answer: data[index].answer,
-        expanded: false
+        correctAnswer: data[index].correctAnswer,
+        expanded: false,
+        showCorrectAnswer: false
     });
     saveData();
     render();
