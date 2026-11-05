@@ -299,7 +299,7 @@ const mode = params.get("mode") === "practice" ? "practice" : "understanding";
 const STORAGE_KEY = `lesson-${lessonId}`;
 const INDEX_KEY = `${STORAGE_KEY}-current-index`;
 
-let data = loadData();
+let data = [];
 let currentIndex = loadCurrentIndex();
 const itemLabel = mode === "practice" ? "Problem" : "Question";
 const addItemLabel = `+ Add ${itemLabel}`;
@@ -348,6 +348,34 @@ function loadData() {
         return normalized;
     } catch (error) {
         console.error(`Unable to load lesson "${lessonId}".`, error);
+        return [];
+    }
+}
+
+async function loadInitialData() {
+    // Only seed when there is no stored entry at all. An existing entry,
+    // including an intentionally empty one, is never overwritten.
+    if (localStorage.getItem(STORAGE_KEY) !== null) {
+        return loadData();
+    }
+
+    try {
+        const response = await fetch("lessons.json");
+
+        if (!response.ok) {
+            return [];
+        }
+
+        const seeds = await response.json();
+        const seeded = seeds ? seeds[lessonId] : null;
+
+        if (!Array.isArray(seeded)) {
+            return [];
+        }
+
+        return seeded.map(normalizeItem);
+    } catch (error) {
+        console.error(`Unable to load seed for lesson "${lessonId}".`, error);
         return [];
     }
 }
@@ -710,7 +738,10 @@ document.addEventListener("click", event => {
     }
 });
 
-render();
+loadInitialData().then(initialData => {
+    data = initialData;
+    render();
+});
 </script>
 
 </body>
