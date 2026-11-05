@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+    color-scheme: light dark;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background: transparent;
+    color: inherit;
+}
+
+textarea {
+    width: 100%;
+    min-height: 250px;
+
+    padding: 12px 0;
+
+    border: none;
+    outline: none;
+
+    resize: vertical;
+
+    background: transparent;
+    color: inherit;
+
+    font-size: 16px;
+    line-height: 1.7;
+
+    font-family: inherit;
+}
+
+textarea::placeholder {
+    opacity: 0.5;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 8px;
+
+    font-size: 13px;
+    opacity: 0.7;
+
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.left {
+    display: flex;
+    gap: 16px;
+}
+
+.right {
+    display: flex;
+    gap: 8px;
+}
+
+button {
+    border: 1px solid rgba(128,128,128,0.3);
+    background: transparent;
+    color: inherit;
+
+    border-radius: 6px;
+
+    padding: 4px 10px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.saved {
+    opacity: 0.7;
+}
+</style>
+</head>
+
+<body>
+
+<textarea
+    id="answer"
+    placeholder="Type your answer here..."
+></textarea>
+
+<div class="toolbar">
+
+    <div class="left">
+        <span id="wordCount">0 words</span>
+        <span id="charCount">0 characters</span>
+        <span class="saved" id="saveStatus">Saved</span>
+    </div>
+
+    <div class="right">
+        <button id="clearBtn">
+            Clear
+        </button>
+    </div>
+
+</div>
+
+<script>
+
+// URL example:
+// ?id=binary-001
+
+const params = new URLSearchParams(window.location.search);
+
+const questionId =
+    params.get("id") || "default";
+
+const STORAGE_KEY =
+    `study-answer-${questionId}`;
+
+const box =
+    document.getElementById("answer");
+
+const wordCount =
+    document.getElementById("wordCount");
+
+const charCount =
+    document.getElementById("charCount");
+
+const saveStatus =
+    document.getElementById("saveStatus");
+
+const clearBtn =
+    document.getElementById("clearBtn");
+
+box.value =
+    localStorage.getItem(STORAGE_KEY)
+    || "";
+
+function updateStats() {
+
+    const text = box.value.trim();
+
+    const words =
+        text.length === 0
+        ? 0
+        : text.split(/\s+/).length;
+
+    wordCount.textContent =
+        `${words} words`;
+
+    charCount.textContent =
+        `${box.value.length} characters`;
+}
+
+function save() {
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        box.value
+    );
+
+    updateStats();
+
+    const now = new Date();
+
+    saveStatus.textContent =
+        "Saved " +
+        now.toLocaleTimeString([], {
+            hour: "numeric",
+            minute: "2-digit"
+        });
+}
+
+box.addEventListener("input", save);
+
+clearBtn.addEventListener("click", () => {
+
+    box.value = "";
+
+    localStorage.removeItem(
+        STORAGE_KEY
+    );
+
+    updateStats();
+
+    saveStatus.textContent =
+        "Cleared";
+});
+
+updateStats();
+
+</script>
+
+</body>
+</html>
