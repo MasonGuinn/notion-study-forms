@@ -71,15 +71,9 @@
       "showCorrectAnswer": false
     },
     {
-      "question": "Predict what happens when you try to store 300 in an 8-bit unsigned field. What about 256?",
+      "question": "Convert 10110100 to decimal and to hex, showing your place values and grouping.",
       "answer": "",
-      "correctAnswer": "300 wraps to 44 in 8-bit unsigned (300 - 256); 256 wraps to 0.",
-      "showCorrectAnswer": false
-    },
-    {
-      "question": "What is 11111111 as an 8-bit unsigned value, and what is it as an 8-bit signed value? Why are they different?",
-      "answer": "",
-      "correctAnswer": "11111111 = 255 unsigned, -1 signed; only the reading rule changes.",
+      "correctAnswer": "10110100 = 128 + 32 + 16 + 4 = 180. Grouped from the right in fours, 1011 is B and 0100 is 4, so 0xB4. Check: 11 times 16 plus 4 is 180, so both routes agree.",
       "showCorrectAnswer": false
     },
     {
@@ -95,9 +89,9 @@
       "showCorrectAnswer": false
     },
     {
-      "question": "Interpret 10000001 and 11110000 as 8-bit signed values, using invert-and-add-1.",
+      "question": "A student converts binary 101101 (6 bits) to hex by grouping from the left and gets 0xB1. Correct them, and give the right answer.",
       "answer": "",
-      "correctAnswer": "10000001 signed = -127; 11110000 signed = -16.",
+      "correctAnswer": "Grouping must start from the right, with the leftmost group padded to four bits. From the right, 10 1101 pads to 0010 1101, which is 2 and D, so 0x2D. Grouping from the left changes which bits belong to which digit.",
       "showCorrectAnswer": false
     },
     {
@@ -107,27 +101,15 @@
       "showCorrectAnswer": false
     },
     {
-      "question": "Sign extension: widen the 8-bit signed value 11111011 to 16 bits. What do you get, and why is padding with zeros wrong here?",
+      "question": "How many distinct values can 12 bits represent, and what is the largest unsigned value they can hold? Explain why those two numbers are different.",
       "answer": "",
-      "correctAnswer": "11111011 (-5) extended to 16 bits = 1111111111111011 = 0xFFFB; padding with zeros would give 0x00FB = +251, which changes the value.",
+      "correctAnswer": "12 bits represent 2 to the 12th power, 4096 distinct values. The largest unsigned value is 4095, because counting from 0 uses one pattern for 0 itself, so the largest is one less than the count.",
       "showCorrectAnswer": false
     },
     {
-      "question": "Signed overflow: what is 01111111 + 00000001 in 8-bit signed arithmetic, and why does the answer look wrong?",
+      "question": "In your own words, why does grouping work for hex, and why would grouping not work for decimal?",
       "answer": "",
-      "correctAnswer": "01111111 + 00000001 = 10000000 = -128 in 8-bit signed: the addition wrapped past +127.",
-      "showCorrectAnswer": false
-    },
-    {
-      "question": "Bitwise: what is 0xA5 & 0x0F, and what is (0xA5 >> 4) & 0x0F? In plain words, what is the mask doing in each case?",
-      "answer": "",
-      "correctAnswer": "0xA5 & 0x0F = 0x05 (low nibble); (0xA5 >> 4) & 0x0F = 0x0A (high nibble). The mask keeps only the nibble you asked for.",
-      "showCorrectAnswer": false
-    },
-    {
-      "question": "Using the history in Why This Exists, explain in your own words why binary hardware won over decimal hardware, and why the byte settled at 8 bits rather than 10.",
-      "answer": "",
-      "correctAnswer": "Two states are the most reliable thing to build, a decimal digit would need ten distinguishable levels, fragile to noise. Shannon showed Boolean logic could be built as switching circuits, so binary logic became cheap hardware. The byte settled at 8 bits because that size, helped to dominance by IBM's System/360, held a 7-bit ASCII character with a spare bit, gave 256 values, and is exactly two hex digits.",
+      "correctAnswer": "Because 16 is a power of two, 2 to the 4th, so one hex digit lines up exactly with four bits and conversion is grouping, not arithmetic. Ten is not a power of two, so decimal digits never line up with bits, and converting binary to decimal always needs place-value addition.",
       "showCorrectAnswer": false
     }
   ],
@@ -140,11 +122,11 @@
       "showCorrectAnswer": false
     },
     {
-      "question": "Predict what happens when a UTF-8 file is opened as Latin-1, and when a signed byte holding 255 is read as unsigned.",
+      "question": "Predict what happens when a UTF-8 file is opened as Latin-1.",
       "answer": "",
-      "correctAnswer": "Opening a UTF-8 file as Latin-1 does not change the bits, but it misreads them: multi-byte UTF-8 characters are split into separate Latin-1 characters, so café can appear as cafÃ©. This is mojibake, an interpretation bug, not a storage bug. For the signed/unsigned case, the pattern 11111111 is -1 as an 8-bit signed (two's complement) value and 255 as an 8-bit unsigned value. A signed byte does not actually hold 255; reading that pattern with the wrong signedness silently flips the value, and the program keeps running with a confident, wrong answer.",
-      "section": "Warm-up",
-      "showCorrectAnswer": false
+      "correctAnswer": "Opening a UTF-8 file as Latin-1 does not change the bits, but it misreads them: multi-byte UTF-8 characters are split into separate Latin-1 characters, so café can appear as cafÃ©. This is mojibake, an interpretation bug, not a storage bug.",
+      "showCorrectAnswer": false,
+      "section": "Warm-up"
     },
     {
       "question": "Connect this to the next lesson: if data is just patterns, what does it mean for a machine to decide something about those patterns?",
@@ -163,13 +145,6 @@
       "showCorrectAnswer": false
     },
     {
-      "question": "Write down the bit patterns for -1 to -4 in two's complement, in three bits.",
-      "answer": "",
-      "correctAnswer": "In three bits, two's complement covers -4 to 3. -1 = 111, -2 = 110, -3 = 101, -4 = 100. Check -1 by invert-and-add-1: 1 is 001, inverted is 110, plus 1 is 111.",
-      "section": "Warm-up",
-      "showCorrectAnswer": false
-    },
-    {
       "question": "Write your name in ASCII codes.",
       "answer": "",
       "correctAnswer": "Your answer depends on your name, so there is no single correct string. Look up each character in ASCII: for example, H = 72, i = 105, so 'Hi' is 72, 105. Uppercase and lowercase are different codes (A = 65, a = 97), and a space is 32. Write one code per character, in order.",
@@ -182,6 +157,86 @@
       "correctAnswer": "Reverse the encoding: take each code, look it up in the ASCII table, and write the character in order. For example, 72, 105 decodes to 'Hi'. If a code does not match the table, or you use a different encoding than the writer used, the decoding is wrong even though the codes themselves did not change.",
       "section": "Main",
       "showCorrectAnswer": false
+    }
+  ],
+  "systems-03a": [
+    {
+      "question": "Predict what happens when you try to store 300 in an 8-bit unsigned field. What about 256?",
+      "answer": "",
+      "correctAnswer": "300 wraps to 44 in 8-bit unsigned (300 - 256); 256 wraps to 0.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "What is 11111111 as an 8-bit unsigned value, and what is it as an 8-bit signed value? Why are they different?",
+      "answer": "",
+      "correctAnswer": "11111111 = 255 unsigned, -1 signed; only the reading rule changes.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Interpret 10000001 and 11110000 as 8-bit signed values, using invert-and-add-1.",
+      "answer": "",
+      "correctAnswer": "10000001 signed = -127; 11110000 signed = -16.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Sign extension: widen the 8-bit signed value 11111011 to 16 bits. What do you get, and why is padding with zeros wrong here?",
+      "answer": "",
+      "correctAnswer": "11111011 (-5) extended to 16 bits = 1111111111111011 = 0xFFFB; padding with zeros would give 0x00FB = +251, which changes the value.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Signed overflow: what is 01111111 + 00000001 in 8-bit signed arithmetic, and why does the answer look wrong?",
+      "answer": "",
+      "correctAnswer": "01111111 + 00000001 = 10000000 = -128 in 8-bit signed: the addition wrapped past +127.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Give the unsigned and signed ranges for 16 bits, and explain where the minus one comes from in the signed positive end.",
+      "answer": "",
+      "correctAnswer": "Unsigned 16-bit: 0 to 65535. Signed 16-bit, two's complement: -32768 to +32767. The minus one is because zero takes one of the patterns, so the positive end stops one short of 32768.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Compare sign-magnitude, one's complement, and two's complement for -5 in 8 bits. Which one does real hardware use, and why?",
+      "answer": "",
+      "correctAnswer": "Sign-magnitude: 10000101, with two zeros. One's complement: 11111010, also with two zeros. Two's complement: 11111011, with one zero. Real hardware uses two's complement because it has one zero and addition works the same way for positive and negative numbers.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Explain what a left shift and a right shift do to a value, and why a right shift on a signed value copies the sign bit.",
+      "answer": "",
+      "correctAnswer": "A left shift by 1 multiplies by 2, a right shift by 1 divides by 2, dropping the remainder. A right shift on a signed value copies the sign bit into the new left-hand bits, so a negative value stays negative; that is sign extension, one shift at a time. On an unsigned value, a right shift fills with zeros.",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-03a-lab": [
+    {
+      "question": "Write down the bit patterns for -1 to -4 in two's complement, in three bits.",
+      "answer": "",
+      "correctAnswer": "In three bits, two's complement covers -4 to 3. -1 = 111, -2 = 110, -3 = 101, -4 = 100. Check -1 by invert-and-add-1: 1 is 001, inverted is 110, plus 1 is 111.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Make -5 in 8-bit two's complement, then check your answer by adding +5 and -5.",
+      "answer": "",
+      "correctAnswer": "+5 is 00000101, inverted is 11111010, plus 1 is 11111011, which is -5. Check: 00000101 plus 11111011 is 100000000, nine bits, and in an 8-bit field the carry out of the top is discarded, leaving 00000000, so 5 plus -5 is 0.",
+      "showCorrectAnswer": false,
+      "section": "Main"
+    },
+    {
+      "question": "Widen -1 and -16 from 8 bits to 16 bits.",
+      "answer": "",
+      "correctAnswer": "-1 is 11111111 in 8 bits, widened to 1111111111111111, 0xFFFF. -16 is 11110000 in 8 bits, widened to 1111111111110000, 0xFFF0. Copy the sign bit into the new bits; padding with zeros would turn both into large positive values.",
+      "showCorrectAnswer": false,
+      "section": "Main"
+    },
+    {
+      "question": "Write down the bit patterns for -1 to -4 in two's complement, in 8 bits.",
+      "answer": "",
+      "correctAnswer": "-1 = 11111111, -2 = 11111110, -3 = 11111101, -4 = 11111100. Check -1: 1 is 00000001, inverted is 11111110, plus 1 is 11111111.",
+      "showCorrectAnswer": false,
+      "section": "Main"
     }
   ],
   "systems-04": [
@@ -201,6 +256,12 @@
       "answer": "",
       "correctAnswer": "Gates alone give single decisions, addition, selection, and, through a flip-flop feeding its output back into its input, a circuit that remembers. What is still missing is a machine organised to hold and step through a sequence of instructions: stored instructions in memory, a way to fetch one instruction at a time, decode it, and execute it, registers to hold values and the next instruction address, and a program counter that moves to the next instruction. That organisation, the fetch-decode-execute cycle and the processor built around it, is the subject of the next lesson.",
       "question": "Connect this to the next lesson: if gates can add and select, what is still missing for a machine that can run a program?",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Bitwise: what is 0xA5 & 0x0F, and what is (0xA5 >> 4) & 0x0F? In plain words, what is the mask doing in each case?",
+      "answer": "",
+      "correctAnswer": "0xA5 & 0x0F = 0x05 (low nibble); (0xA5 >> 4) & 0x0F = 0x0A (high nibble). The mask keeps only the nibble you asked for.",
       "showCorrectAnswer": false
     }
   ],
