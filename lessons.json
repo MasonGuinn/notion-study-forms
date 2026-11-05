@@ -1,0 +1,55 @@
+{
+  "systems-03": [
+    {
+      "question": "In your own words, why can the same bit pattern mean a letter in one program and a number in another?",
+      "answer": "",
+      "correctAnswer": "A bit pattern has no meaning on its own. The interpretation lives in the program that reads it, not in the pattern. For example, 01000001 is 65 as an unsigned number and 'A' under ASCII. Change the codebook, the type, or the encoding, and the same bits mean something different, with no error to warn you.",
+      "section": "Warm-up",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Predict what happens when a UTF-8 file is opened as Latin-1, and when a signed byte holding 255 is read as unsigned.",
+      "answer": "",
+      "correctAnswer": "Opening a UTF-8 file as Latin-1 does not change the bits, but it misreads them: multi-byte UTF-8 characters are split into separate Latin-1 characters, so café can appear as cafÃ©. This is mojibake, an interpretation bug, not a storage bug. For the signed/unsigned case, the pattern 11111111 is -1 as an 8-bit signed (two's complement) value and 255 as an 8-bit unsigned value. A signed byte does not actually hold 255; reading that pattern with the wrong signedness silently flips the value, and the program keeps running with a confident, wrong answer.",
+      "section": "Warm-up",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Connect this to the next lesson: if data is just patterns, what does it mean for a machine to decide something about those patterns?",
+      "answer": "",
+      "correctAnswer": "A machine does not understand the meaning. It applies fixed rules to patterns, for example logic gates and comparisons, and then acts on the result: branch, store, output, or keep going. To decide is to test a pattern against a rule, such as is this bit 1, is this value zero, or is this pattern greater than that one, and let the outcome select the next step. The meaning of the pattern is still supplied by the program designer and the agreed encoding.",
+      "section": "Warm-up",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-03-lab": [
+    {
+      "question": "Write down the bit patterns for the numbers 0 to 7 in three bits.",
+      "answer": "",
+      "correctAnswer": "0 = 000, 1 = 001, 2 = 010, 3 = 011, 4 = 100, 5 = 101, 6 = 110, 7 = 111. Place values are 4, 2, 1, and three unsigned bits cover 0 to 7.",
+      "section": "Warm-up",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Write down the bit patterns for -1 to -4 in two's complement, in three bits.",
+      "answer": "",
+      "correctAnswer": "In three bits, two's complement covers -4 to 3. -1 = 111, -2 = 110, -3 = 101, -4 = 100. Check -1 by invert-and-add-1: 1 is 001, inverted is 110, plus 1 is 111.",
+      "section": "Warm-up",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Write your name in ASCII codes.",
+      "answer": "",
+      "correctAnswer": "Your answer depends on your name, so there is no single correct string. Look up each character in ASCII: for example, H = 72, i = 105, so 'Hi' is 72, 105. Uppercase and lowercase are different codes (A = 65, a = 97), and a space is 32. Write one code per character, in order.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Decode a friend's name from ASCII codes, the same way.",
+      "answer": "",
+      "correctAnswer": "Reverse the encoding: take each code, look it up in the ASCII table, and write the character in order. For example, 72, 105 decodes to 'Hi'. If a code does not match the table, or you use a different encoding than the writer used, the decoding is wrong even though the codes themselves did not change.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ]
+}
