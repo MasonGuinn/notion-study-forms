@@ -1,4 +1,68 @@
 {
+  "systems-00": [
+    {
+      "answer": "",
+      "correctAnswer": "Bottom to top: 1. Data: it solves representing every kind of information in a common form so one machine can handle it all. 2. Logic: it solves making decisions, by combining simple yes-or-no choices into arithmetic, comparison, and memory. 3. Hardware: it solves physically executing instructions, one step at a time, with processors, registers, and instruction sets. 4. Executable programs: it solves turning human-written source into a file a machine can actually run, through translation, machine code, loading, and linking. 5. Operating system: it solves sharing one machine fairly and safely among many programs, through processes, scheduling, memory management, files, and services. 6. Programs in motion: it solves what happens when programs actually run together over time, including concurrency, observation, performance, failure, and security.",
+      "question": "Name the six layers in order, bottom to top, and for each one, say in one sentence what problem it solves.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "A logic gate belongs to Logic, and it interacts most with Hardware above it, because gates are wired into circuits and processors that execute instructions. A process belongs to the Operating system layer, and it interacts most with Programs in motion above it, because a process is a program actually running alongside other programs, while it also comes from an Executable program below it. A file belongs to the Operating system layer, which manages files and services, and it interacts most with Executable programs below it, because a program file is translated and loaded before it can run. A race condition belongs to Programs in motion, because it is a concurrency problem when programs run together, and it interacts most with the Operating system below it, which schedules and shares the machine between those programs. A permission belongs to Programs in motion, where the lesson places permission failures, and it interacts most with the Operating system below it, which enforces isolation and sharing rules.",
+      "question": "Place each of these on the map: a logic gate, a process, a file, a race condition, a permission. Which layer does each belong to, and which neighbouring layer does it interact with most?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "This series will give them the concepts underneath C++: the six layers, how data is represented, how logic and hardware work, how programs become runnable, and how an operating system shares a machine. It will not teach C++ syntax, and no lesson requires C++ code, because programs here are described in plain language and concepts. The C++ learning itself belongs outside this series, in a course that teaches C++ syntax later, where these concepts are what that syntax will express.",
+      "question": "A friend says, \"I want to learn C++ from this series.\" Using the scope boundaries above, explain what this series will and will not give them, and where the C++ learning itself belongs.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Example action, sending a text message. Data: the message text and any photo are numbers, characters, and compressed data. Logic: gates in the processor compare, add, and decide as the message is encoded and checked. Hardware: the processor executes instructions, registers hold intermediate values, and memory holds the message while it is being prepared. Executable programs: the messaging app is a translated, loaded program, not source text. Operating system: the operating system scheduled the app, gave it an address space, and mediated its access to the screen, keyboard, storage, and network. Programs in motion: other apps ran alongside it, isolated from it, while the message was sent and a copy was saved.",
+      "question": "Trace taking a photo on your phone through all six layers, as in the Real-World Example, but using a different everyday action of your choice.",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-00-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "Worked method, using a web browser as an example, and your own program will give different details. Data: web pages, text, images, and saved passwords or bookmarks. Hardware: the processor to run the browser, memory to hold open pages, and storage for downloads and history. Operating system: it schedules the browser, gives it memory and an address space, and mediates access to the screen, keyboard, network, and files. Programs in motion: other programs such as a music player or a backup program run alongside it, isolated from it. Then answer the readiness gate in plain language: 1. A program is a set of instructions a computer follows, for example a browser takes a web address as input and shows a page as output. 2. A file is stored data with a name, and reading one means the program asks for that stored data and uses it. 3. A computer needs an operating system to share one machine fairly and safely between programs and to mediate access to hardware. 4. You do not need to know any programming language yet. Keep the page and answer the same questions again at the end of the series to compare.",
+      "question": "On your own machine only, open a program you use daily and, on paper, map it to the six layers: what data does it handle, what hardware does it rely on, what does the operating system do for it, and what other programs run alongside it? Then answer the C++ readiness gate questions above, in writing, in plain language. Keep that page. At the end of the series, answer them again and compare — the difference is a measure of what you have learned that no test score captures.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-01": [
+    {
+      "answer": "",
+      "correctAnswer": "A computer system is a set of parts doing five jobs together: input, storage, processing, output, and coordination. A single device is only one part of that system, for example a processor alone. The processor is fast but forgets when power is lost, memory is fast but small and expensive, and storage is large but slow, so no single part does all five jobs. The system exists because the tradeoffs of each part cancel out when they are combined.",
+      "question": "Explain, without looking, what a computer system is, in your own words, and how it differs from a single device.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "When storage fails, work is lost, even if processing was perfect. When memory runs out, the app is closed, as in the lesson example where a photo app is closed when memory runs out, and unsaved work in that app is lost. When coordination fails, one program can read another program's memory, hog the processor, or crash the whole machine. Coordination failure is the security failure, because most system security is coordination done well: isolation and privilege are what stop one program from reaching another program's data or taking over the machine.",
+      "question": "Predict what happens when storage fails, when memory runs out, and when coordination fails. Which failure is a security failure, and why?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "The five jobs all have to work on the same material, and the system is built as layers of agreements. At the bottom layer, bits agree on how to represent data. Only once everything, input, stored data, instructions, and output, is represented as bits can the layers above agree on how to decide with gates, execute instructions in hardware, and load and run programs. Without that common representation first, each part would speak a different language, like the isolated machines in the lesson, and the parts could not work together as one system.",
+      "question": "Connect this lesson to the next one: why does a system that does these five jobs need a way to represent everything as bits first?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-01-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "Worked method, using a phone as an example, and your own machine will give different details. Input, touchscreen and microphone: if input fails, the system works on wrong or missing data and correct processing does not save it. Processing, the processor: if processing fails, output is wrong even if input and storage were perfect. Memory, fast temporary memory: if memory runs out, apps are closed and unsaved work in them is lost. Storage, persistent storage: if storage fails, work and files are lost even if processing was perfect. Output, screen and speakers: if output fails, results cannot reach you even though the work was done. Coordination, the operating system: if coordination fails, one program can read another program's memory, hog the processor, or crash the whole machine.",
+      "question": "On your own machine only. List the input, processing, memory, storage, output, and coordination parts of your own computer or phone. For each part, write one sentence on what would break if that part failed.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
   "systems-02": [
     {
       "question": "Explain, in your own words, why a computer uses binary and why humans use hex to read it.",
@@ -116,6 +180,256 @@
       "question": "Decode a friend's name from ASCII codes, the same way.",
       "answer": "",
       "correctAnswer": "Reverse the encoding: take each code, look it up in the ASCII table, and write the character in order. For example, 72, 105 decodes to 'Hi'. If a code does not match the table, or you use a different encoding than the writer used, the decoding is wrong even though the codes themselves did not change.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-04": [
+    {
+      "answer": "",
+      "correctAnswer": "Every decision a computer makes is a combination of true or false values, with one or two bits in and one bit out. AND gives 1 only if all inputs are 1, OR gives 1 if any input is 1, and NOT inverts its input. Wired together, those simple decisions compose into circuits that add, compare, or select, and circuits wired together become a processor. The lesson states the related completeness result for NAND, which is AND followed by NOT, and says any logic circuit can be built from NAND gates alone, so AND and NOT alone can build any circuit, and OR is the convenient third gate for the same combinations.",
+      "question": "In your own words, why are AND, OR, and NOT enough to build any decision a computer can make?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "For inputs 1 and 1, the half-adder outputs sum 0 and carry 1. The sum uses XOR, which gives 1 only if the inputs differ, and 1 and 1 do not differ, so the sum is 0. The carry uses AND, which gives 1 only if all inputs are 1, and both inputs are 1, so the carry is 1. Read together as binary 10, that is decimal 2, which is the correct result of 1 plus 1.",
+      "question": "Predict what a half-adder outputs for inputs 1 and 1, and explain both the sum and the carry.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Gates alone give single decisions, addition, selection, and, through a flip-flop feeding its output back into its input, a circuit that remembers. What is still missing is a machine organised to hold and step through a sequence of instructions: stored instructions in memory, a way to fetch one instruction at a time, decode it, and execute it, registers to hold values and the next instruction address, and a program counter that moves to the next instruction. That organisation, the fetch-decode-execute cycle and the processor built around it, is the subject of the next lesson.",
+      "question": "Connect this to the next lesson: if gates can add and select, what is still missing for a machine that can run a program?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-04-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "By De Morgan's law, NOT (A AND B) equals (NOT A) OR (NOT B). The equivalent circuit is: pass A through a NOT gate, pass B through a NOT gate, and feed both inverted outputs into an OR gate. Truth check: NOT (A AND B) is 0 only when A is 1 and B is 1, and 1 otherwise, and (NOT A) OR (NOT B) is also 0 only when A is 1 and B is 1, and 1 otherwise, so the two forms agree on all four input combinations. Example room condition, in plain language, for a library study room, and your own room will give a different condition: you may enter if you are a student and the room is open, or if a staff member lets you in. As a Boolean condition: you may enter if (you are a student AND the room is open) OR (a staff member lets you in).",
+      "question": "Simplify NOT (A AND B) using De Morgan's law, then draw the equivalent circuit with OR and NOT gates. Then write, in plain language, the Boolean condition for “you may enter this room” in a building you know well.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-10": [
+    {
+      "question": "In your own words, what is the relationship between machine code, assembly, and a high-level language?",
+      "answer": "",
+      "correctAnswer": "Machine code is the CPU's native language: the bit patterns, defined by its instruction set, that it executes directly. Assembly is the same instructions in human-readable form, one mnemonic per instruction, mapping one to one onto machine code, so the meaning is identical and only the presentation changes. A high-level language is written in words, variables and abstractions that humans understand, and it must be translated down into assembly and then machine code before the CPU can run it. Reading assembly therefore shows what a program actually does, not only what its source claims.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Predict what happens if a jump instruction's target address is off by one byte.",
+      "answer": "",
+      "correctAnswer": "The CPU fetches and decodes bytes starting one byte too late, so it decodes a different instruction, or nonsense, instead of the intended one. Execution veers off course, and it may execute data as code or read or write the wrong memory cell. At this level there are no error messages, only wrong behaviour, so the program can fail silently or crash far from the original mistake.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Connect this to the next lesson: if humans write in high-level languages and CPUs execute machine code, what bridges the gap?",
+      "answer": "",
+      "correctAnswer": "The compilation pipeline bridges the gap, in stages. A compiler translates high-level source into assembly, an assembler translates assembly mnemonics into machine-code bytes, and a linker combines object files and libraries into an executable. Each stage can be checked and debugged separately, which is why a build failure should first be traced to the stage that failed.",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-10-lab": [
+    {
+      "question": "Write, on paper, assembly for: load 3, load 4, add them, store the result. Then change one operand and trace how the result changes. Next, label each instruction in this supplied loop, which counts down from 3: load 3 into a counter, compare the counter with 0, jump to the end if equal, subtract 1, jump back to the compare. Explain, for each instruction, what changes in a register or in the program counter.",
+      "answer": "",
+      "correctAnswer": "First part: load 3 into a register, load 4 into another register, add them to get 7, and store 7 as the result. If you change one operand, the result changes by the same amount: for example, loading 5 instead of 4 gives 3 plus 5 equals 8, and loading 2 instead of 3 gives 2 plus 4 equals 6. Second part, loop trace: load sets the counter to 3 and the program counter moves to the next instruction. Compare checks the counter against 0 and sets flags, and the program counter moves on. Jump to the end if equal changes the program counter to the end only when the counter is 0, and otherwise moves to the next instruction. Subtract 1 changes the counter, and the program counter moves on. Jump back to the compare always changes the program counter back to the compare instruction. The counter therefore takes the values 3, 2, 1 and then 0 at the compare, with three subtractions, and when the counter reaches 0 the equal jump leaves the loop.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-11": [
+    {
+      "question": "In your own words, what does each stage of the pipeline produce, and what kind of error belongs to each stage?",
+      "answer": "",
+      "correctAnswer": "Preprocessing produces preprocessed source: it handles headers, macro expansion and conditional compilation, and its errors look like missing files or expanded text that no longer parses. Compiling produces assembly: its front end parses source into an abstract syntax tree and checks types and names, its middle end optimises, and its back end generates assembly for the target instruction set, and compiler warnings live here. Assembling produces an object file with sections for code and data and unresolved references, resolving labels to addresses within the file, and its errors mean a label or instruction was invalid. Linking produces an executable by combining object files and libraries and resolving references between them, and its errors mean a piece is missing, such as an undefined function.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Predict why a program might behave differently at high optimisation, and what that tells you about the program.",
+      "answer": "",
+      "correctAnswer": "An optimising compiler may reorder operations, remove code it proves is unused, or replace a loop with a faster equivalent, as long as the observable behaviour is preserved. A program that runs correctly without optimisation but crashes or behaves differently with optimisation is usually relying on behaviour the compiler was free to change, such as unspecified behaviour. That tells you the program depended on something the language did not guarantee, rather than on a bug that only exists at high optimisation.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Connect this to the next lesson: once you have object files, what remains before you have a runnable program?",
+      "answer": "",
+      "correctAnswer": "Linking remains. The linker combines the object files and any libraries into one executable, resolving references between them, so that every reference to a function or variable defined in another file is matched to its definition. Only after linking is there a complete runnable program for the loader to turn into a process.",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-11-lab": [
+    {
+      "question": "On paper, take this plain-language program — add two numbers and print the result — and write what each stage produces: preprocessed source, assembly, object code, and executable. Then write one failure that could occur at each stage, and how you would tell which stage failed. No compiler or code is needed for this exercise.",
+      "answer": "",
+      "correctAnswer": "Worked method for add two numbers and print the result: preprocessed source is still readable source, but with headers included, macros expanded and conditional sections resolved. Assembly is the same program in mnemonics for the target instruction set, with load, add, store and a call to print, and labels for addresses. Object code is machine-code bytes in sections for code and data, with references such as the print routine still unresolved. The executable is the complete linked machine code, ready to load and run. One failure per stage: preprocessing fails if a header file is missing, so no preprocessed output is produced. Compiling fails on a type error or an unknown name, reported as a compiler error. Assembling fails on an invalid instruction or label. Linking fails on an undefined function, with a message naming the missing symbol. You tell which stage failed by the first stage that produces no output or reports an error, because a later stage cannot succeed if an earlier stage did not produce its output.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-12": [
+    {
+      "question": "In your own words, what is the difference between a program file and a process image?",
+      "answer": "",
+      "correctAnswer": "A program file is a static plan on disk: an executable with headers and sections, which does not change as it runs. A process image is that plan in motion, in memory: it has text for code, data for initialised global and static variables, BSS for uninitialised variables zero-filled at load, a heap that expands, a stack that grows and shrinks, registers with current values, and a program counter pointing at the next instruction, plus operating-system bookkeeping such as open files, permissions and the process identity. The file may even be deleted or changed while the program runs without affecting the running image.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Predict the symptom of a missing dynamic library versus a missing static symbol at link time.",
+      "answer": "",
+      "correctAnswer": "A missing static symbol stops linking with a clear unresolved symbol error, and no executable is produced. A missing dynamic library is different: the program was built correctly, but it stops at load time before any of its code runs, with a message such as DLL not found or shared library missing. A program that runs on one machine but not on another often differs only in which library versions the loader can find on that machine.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Connect this to the next lesson: if a file must be loaded into memory, how is that file itself structured, and what can go wrong when machines disagree about its layout?",
+      "answer": "",
+      "correctAnswer": "The file itself is structured as a binary file with headers and sections: the loader reads the headers, maps the sections into memory, resolves dynamic dependencies, sets up the stack and jumps to the entry point. The next lesson covers that binary structure in detail, including word size and endianness. When machines disagree about the layout, for example about byte order or word size, the loader or reader can misread header fields and values, so sections, entry points and numbers are interpreted incorrectly even though the bytes themselves have not changed.",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-12-lab": [
+    {
+      "question": "Sketch a process image for a program with a global variable, a local variable in a function, and a dynamically allocated block. Label text, data, heap, and stack, and show which way heap and stack grow.",
+      "answer": "",
+      "correctAnswer": "Expected sketch, in order: text at one end holds the program instructions and is usually read-only. Data holds an initialised global variable, while an uninitialised global variable goes in BSS, zero-filled at load. The heap holds the dynamically allocated block and grows upwards, towards the stack. The stack holds function call frames, including the local variable in a function and return addresses, and grows downwards, towards the heap. So heap and stack grow towards each other, with free space between them, and the local variable disappears when its function returns, while the heap block remains until it is freed.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-17": [
+    {
+      "answer": "",
+      "correctAnswer": "A virtual address is an address in one process's own private, continuous address space. It is meaningful only through that process's page table. A physical address is a real location in the machine's physical memory, in a frame. When a program uses an address, it is always using a virtual address. The processor's memory management unit looks it up in the page table, translates it to a physical address, and only then touches real memory. The program never sees the physical address.",
+      "question": "In your own words, what is a virtual address, and how does it differ from a physical address?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Not necessarily, and normally no. Each process has its own page table and therefore its own address space. The same virtual address in two processes maps to different physical frames, or to no frame at all. So both processes can hold the pointer value 0x1000 while referring to completely different physical data, or one may hold a pointer to a page the other has no mapping for at all. This is the foundation of process isolation: a process simply has no mapping to another process's memory, so it cannot address it, even by accident.",
+      "question": "Two processes both use the pointer value 0x1000. Do they refer to the same data? Explain, using page tables.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Step 1: the program touches a virtual page that has no physical frame, because it was moved to disk to make room or has never been used. Step 2: the processor raises a page fault. Step 3: the operating system pauses the program. Step 4: it finds a free frame, or evicts an unused page to disk to free one. Step 5: it loads the needed page from disk. Step 6: it updates the page table. Step 7: it resumes the program at the same instruction, as if nothing had happened. A page fault instead kills the program when it is not fixable: when the program touches a page it has no permission for, or an address with no mapping at all. That is the familiar segmentation fault.",
+      "question": "What happens, step by step, when a program touches a page that is currently on disk? When does a page fault instead kill the program?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Because writing and executing are separate permissions in the page table. Pages carry permissions such as read, write, and execute, so data can be marked non-executable. An attacker who manages to write malicious code into a program's data therefore still cannot then execute it from that data page, because the page table does not allow execution there. This stops that class of attack before it starts, even though the write itself succeeded.",
+      "question": "Why does marking data pages non-executable help security, even if an attacker can already write to a program's memory?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-17-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "Expected outcome: the added-up memory of a few large programs often exceeds total physical memory, and the machine still works. That is normal in a virtual memory system, not an error. Only the pages actually in use need a physical frame at any moment. Idle pages sit on disk, not in physical memory, and a page fault loads them back on demand when the program touches them again. For example, an idle browser tab's pages sit on disk until you click the tab, when a burst of page faults loads them back, slightly delayed but intact. If too many programs became active at once, you would expect thrashing: the system would spend more time moving pages between disk and memory than doing work, and everything would slow at once, because fetching a page from disk is thousands of times slower than reading physical memory.",
+      "question": "On your own machine or a class lab machine only, and only with systems you own or are authorised to use. Do not inspect the memory of any process that is not yours. On your own computer, open a system monitor and note the memory reported for a browser or editor you are running, then note your machine's total physical memory. Add up the memory of a few large programs: does the total exceed physical memory? Write a short paragraph explaining, using pages and page faults, why the machine still works — and what you would expect to notice if too many of those programs became active at once.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-23": [
+    {
+      "question": "In your own words, distinguish use-after-free, double-free, and leak — and say which one a garbage collector prevents.",
+      "answer": "",
+      "correctAnswer": "Use-after-free is using heap memory after it was freed, so reads return someone else's data and writes corrupt it. Double-free is freeing the same block twice, which corrupts the allocator's free-list. A leak is allocating without freeing, so a long-running program's memory grows until it is killed or the system slows. A garbage collector prevents use-after-free and double-free, because the programmer never frees memory by hand; it also reclaims memory that is no longer reachable, but it does not prevent a leak where a reference is still held even though the data is no longer needed.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Predict why a buffer overflow might crash immediately in one program and silently corrupt data in another.",
+      "answer": "",
+      "correctAnswer": "A buffer overflow writes past the end of a buffer into adjacent memory, and what happens depends on what sits next to it and whether that corrupted value is used. If it overwrites a return address, a saved register, or a pointer that is used straight away, the program crashes at or near the fault. If it overwrites data that is never read, is overwritten again before use, or only affects an output nobody checks, the corruption stays latent and the program keeps running with wrong data. Memory errors often do not crash at the faulty line; a corrupted value may be used much later, in unrelated code.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Connect this to the next lesson: if memory errors are about where data lives, why does how a program accesses data affect its speed so much?",
+      "answer": "",
+      "correctAnswer": "Because a processor is far faster than main memory, so speed depends on whether the data a program needs is already nearby in cache when it is asked for. Accessing data in an order that reuses nearby, recently used data keeps the cache working and the CPU fed; accessing data in a scattered order misses the cache constantly and pays the full trip to RAM each time. So where data lives, and the order it is visited in, decide performance even when the instruction count is the same.",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-23-lab": [
+    {
+      "question": "For each error class above, write one sentence describing a program that commits it, and one sentence describing how you would detect it. No code is required — naming the error precisely is the skill being practised.",
+      "answer": "",
+      "correctAnswer": "Example set covering the lesson's error classes. Use-after-free: a program frees a message buffer and then prints from it; detect it with an address sanitizer, which reports the access to freed memory. Double-free: a program frees the same block on two error-handling paths; detect it with a sanitizer or allocator checker, which reports the second free. Buffer overflow: a program copies user input into a fixed buffer without checking its length and overwrites the neighbouring variable; detect it with a sanitizer or by fuzzing with over-long inputs. Buffer over-read: a program reads past the end of a buffer using a client-supplied length; detect it with a sanitizer or fuzzing. Leak: a server allocates a record per request and never frees it, so its memory grows over hours; detect it with a leak checker or by watching memory grow over time. Stack overflow: a function recurses with no base case until the stack is exhausted; detect it from the crash and the deep call stack. Uninitialised use: a program reads a variable it allocated but never wrote, getting whatever old data was there; detect it with a sanitizer that tracks uninitialised reads. Dangling pointer: a function returns a pointer to its own stack local and the caller uses it after the frame has returned; detect it with a sanitizer, which reports a stack-use-after-return.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-24": [
+    {
+      "question": "In your own words, explain why walking a row-major array column-by-column is slow, using cache lines.",
+      "answer": "",
+      "correctAnswer": "In a row-major layout each row is stored contiguously, and a cache fetch brings in a whole line, neighbours included. Walking row by row uses every element of each fetched line before moving on, so most accesses are already cached. Walking column by column jumps by a whole row's width on every step, landing in a different cache line each time and using only one element from each line fetched, so nearly every access misses and pays the full trip to RAM. The same loops with the order swapped can differ by an order of magnitude in runtime.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Predict the effect of doubling a program's working set beyond L3 cache size, and of halving it to fit in L1.",
+      "answer": "",
+      "correctAnswer": "Doubling the working set beyond L3 cache size means the data a program actively uses no longer fits in any cache, so it thrashes: lines are evicted before they are reused, most accesses miss to RAM, and the program slows sharply. Halving the working set to fit in L1 means the data it actively uses sits in the smallest, fastest cache, so most accesses hit there and the program runs fast.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Connect this to the next lesson: if one program's locality matters this much, what happens when two programs share a machine and its caches?",
+      "answer": "",
+      "correctAnswer": "Two programs sharing a machine also share its caches, so each program's accesses can evict the other program's lines, destroying the locality each one relied on and slowing both down. On multiple cores the effect is worse: two cores writing to different variables that share one cache line cause that line to bounce between cores, called false sharing, even though the variables are independent. Shared caches also leak information through timing, so a performance fix that ignores isolation can become a security bug.",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-24-lab": [
+    {
+      "question": "On paper, take a 4 by 4 grid of numbers stored row by row, with one cache line holding 4 numbers. Count how many cache lines are touched when you visit the grid row by row, and how many when you visit it column by column. Explain which order exploits spatial locality, and why the other order does not — no code or measurement is needed.",
+      "answer": "",
+      "correctAnswer": "Row by row: 4 cache lines touched, one per row, and each line is fully used, all 4 of its numbers visited before moving on. Column by column: 16 line visits, because every step lands in a different row's line and uses only one number from it before jumping away, so each column revisits all 4 lines. Row-by-row order exploits spatial locality, since data near used data is used soon and the whole fetched line pays off; column-by-column order does not, since it throws away the neighbours each fetch brought in and must reload the same lines again for the next column.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-25": [
+    {
+      "question": "Two threads each add 1 to a shared counter starting at 10, without a lock. List every possible final value and explain, step by step, how the wrong one happens.",
+      "answer": "",
+      "correctAnswer": "Possible final values: 11 and 12. The correct result, 12, happens when the two read-modify-write sequences do not overlap: one thread reads 10, adds 1, writes 11, then the other reads 11, adds 1, writes 12. The wrong result, 11, happens when both threads read before either writes: thread A reads 10, thread B reads 10, thread A writes 11, thread B writes 11. One update is lost because both threads worked from the same stale read.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Explain what a critical section is, what a lock guarantees about it, and why a lock only works if every thread touching the data uses it.",
+      "answer": "",
+      "correctAnswer": "A critical section is the stretch of code that touches shared data and must not be interleaved with another thread's critical section for the same data. A lock, also called a mutex, guards it: a thread must hold the lock to enter and must release it when it leaves, which makes the read-modify-write atomic, indivisible, as if it happened in a single instant, while other threads wait outside. A lock only works if every thread touching the data uses the same lock, because one thread that skips the lock breaks the protection for everyone, silently, by reading and writing the shared data while another thread is inside its critical section.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "State the four conditions for deadlock, and for each one, name a design rule that breaks it.",
+      "answer": "",
+      "correctAnswer": "Mutual exclusion: a resource held by one thread at a time; break it by making the resource shareable where that is safe, so no exclusive hold is needed. Hold and wait: a thread holds one resource while waiting for another; break it by taking all locks at once or none, so a thread never waits while holding. No preemption: a held resource cannot be taken away by force; break it by using timeouts, so a wait cannot last forever and the thread releases what it holds and retries. Circular wait: thread A waits for something thread B holds while thread B waits for something thread A holds; break it by always taking locks in the same order, so a cycle cannot form.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Why can a race condition pass a thousand test runs and still fail in production? What does that imply about how you should argue that concurrent code is correct?",
+      "answer": "",
+      "correctAnswer": "A race only shows up under one particular interleaving, and the interleaving depends on the scheduler, the number of cores, and the load on the machine, so a test run samples only a tiny fraction of the possible orderings and may pass a thousand times before the failing ordering arrives on a customer's machine under load. Bugs that vanish when you try to observe them, because logging or a debugger changes the timing, are called Heisenbugs. This implies testing can show that a bug exists but passing tests cannot prove that a race does not exist, so correctness has to be argued from the design: which shared data exists, which lock guards it, and whether every access honours that lock.",
+      "showCorrectAnswer": false
+    },
+    {
+      "question": "Describe a TOCTOU flaw in your own words: what is checked, what changes, and what happens in the gap?",
+      "answer": "",
+      "correctAnswer": "TOCTOU means time-of-check to time-of-use. A program checks a condition, for example whether a user is allowed, whether a file is safe, or whether an account has funds, and then acts on it, but another thread or process changes the thing between the check and the act. What is checked is the condition, what changes is the thing the check was about, and what happens in the gap is that the check was true when made and false when used, so the action goes ahead on a basis that no longer holds. Attackers deliberately try to win that race, repeating the attempt until the timing lines up in their favour, which is why security-critical checks and the actions they authorise must be atomic, under the same lock, with no gap.",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-25-lab": [
+    {
+      "question": "On your own machine only. Do a paper simulation first — no code needed. Write a shared tally starting at 10. Play two workers, A and B, each following the steps \"read the tally, add 1, write the tally back.\" Interleave their steps in three different orders, including one where both read before either writes. Record the final tally for each order and circle the lost update. Then, on your own machine only, open your operating system's process viewer and find a program with many threads; note how many threads it has and why a program that looks like \"one app\" is really many paths of execution sharing data. Write one sentence naming the shared data you think matters most in that program, and one sentence naming what a lock would protect there.",
+      "answer": "",
+      "correctAnswer": "Paper simulation, three orders. Order 1, A fully then B: A reads 10, writes 11, B reads 11, writes 12, final tally 12, no lost update. Order 2, B fully then A: B reads 10, writes 11, A reads 11, writes 12, final tally 12, no lost update. Order 3, both read before either writes: A reads 10, B reads 10, A writes 11, B writes 11, final tally 11, circle this lost update, one increment vanished because both workers used the same stale read. Process viewer part, worked example: a web browser may show dozens of threads across its processes, because one app is really many paths of execution, one per tab, one for networking, one for rendering, one for the interface, sharing data such as the tab list, the download list, or the open document. The shared data that matters most is the list of open tabs and pages, and a lock would protect that list while a thread adds, closes, or reads a tab, so two threads cannot update it at the same moment.",
       "section": "Main",
       "showCorrectAnswer": false
     }
