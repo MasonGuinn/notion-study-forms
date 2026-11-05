@@ -213,6 +213,151 @@
       "showCorrectAnswer": false
     }
   ],
+  "systems-05": [
+    {
+      "answer": "",
+      "correctAnswer": "Fetch: the program counter holds the address of the add instruction, and the CPU reads that instruction from memory into the instruction register. Decode: the control circuitry reads the opcode and operands and recognises this as an add, and which registers hold the two numbers. Execute: the arithmetic-logic unit adds the two register values and writes the result to the destination register, then the program counter advances to the next instruction. Then the loop repeats.",
+      "question": "In your own words, walk through one full fetch-decode-execute cycle for an instruction that adds two numbers.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "The CPU does not know the difference between code and data in memory. It will fetch the data bytes as if they were an instruction, decode them as an opcode and operands, and execute whatever operation that decoding happens to describe. That can run the wrong operation, jump to a nonsense address, or crash with an illegal instruction, because the cycle is faithful to the program counter even when the program counter is wrong.",
+      "question": "Predict what happens if the program counter is set to an address holding data, not code.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "The machine needs one memory holding both instructions and data, a processor with a small set of fast registers for current work, and a bus connecting them, plus input and output. That organisation is the von Neumann architecture: the fetch cycle reads instructions from the shared memory, the registers hold operands and results, and the instruction set is the vocabulary the processor can decode.",
+      "question": "Connect this to the next lesson: if the cycle needs memory, registers, and instructions, how should a machine be organised to provide them?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-05-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "Work through it step by step, with the program counter starting at the first instruction and advancing by one per instruction. Step 1, load: the PC points at the first load, the CPU fetches it, and the destination register changes to the loaded value. Step 2, load: the PC advances, the second value is loaded into a second register. Step 3, add: the PC advances, the arithmetic-logic unit adds the two registers, and the result register changes. Step 4, store: the PC advances, the result is written to memory, and no register holding an operand needs to change. Step 5, halt: the PC points at halt, the CPU fetches it, and the loop stops. The exact register names depend on your notation, but the pattern should be: PC advances each step, one instruction is fetched per step, and only the destination register or memory changes at each step.",
+      "question": "Trace, on paper, a tiny program of five instructions: load, load, add, store, halt. For each step, write down the PC, the instruction fetched, and which registers change. No computer is required.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-06": [
+    {
+      "answer": "",
+      "correctAnswer": "Stored-program means the program is held in the same memory as the data, as instructions that the processor can read and follow, rather than being wired into the machine itself. That mattered because changing the job no longer meant rewiring the machine: you could load a new program into memory and the same machine would do a different job. It turned computers from single-purpose calculators into general-purpose machines.",
+      "question": "In your own words, what does it mean to say a machine is “stored-program,” and why did that matter?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "The CPU spends its time waiting for instructions and data to cross the bus, so it idles even though its clock is fast, and overall performance is limited by bus bandwidth, not by processor speed. Two ways systems work around it are caches, which keep frequently used instructions and data close to the CPU so fewer trips cross the bus, and parallelism, such as pipelining, multiple cores, or wider and faster buses, which overlap work or move more data per trip.",
+      "question": "Predict what happens to performance if the bus between CPU and memory becomes the bottleneck, and name two ways systems work around it.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Something in between in both speed and size: a layered memory hierarchy, starting with caches. Cache is larger than the register set but smaller and slower than main memory, and it holds copies of the data most likely to be needed next, so the CPU usually finds what it needs close by instead of waiting for main memory every time.",
+      "question": "Connect this to the next lesson: if registers are fast but tiny and memory is large but slow, what should sit between them?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-06-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "Your sketch should show one memory with sixteen cells, one CPU, and one bus connecting them, with the CPU holding a program counter, an instruction register, and four general-purpose registers. Trace: load - the program counter points at the load instruction, the CPU fetches it across the bus, decodes it, then fetches the value from the named memory cell across the bus into a register. Add - the program counter advances, the CPU fetches and decodes the add, the arithmetic-logic unit adds two registers, and the result register changes. Store - the program counter advances, the CPU fetches and decodes the store, and the result register value is sent across the bus into the named memory cell. Every step crosses the bus, and the program counter advances after each instruction unless a jump says otherwise.",
+      "question": "Sketch a von Neumann machine: CPU with PC, instruction register, and four general-purpose registers; a memory of sixteen cells; a bus. Then trace one load, one add, and one store through your sketch.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-07": [
+    {
+      "answer": "",
+      "correctAnswer": "Locality means programs tend to reuse data they just used, which is temporal locality, and to use data near data they just used, which is spatial locality. A layered memory works because each level holds copies of the data most likely to be needed next, so the CPU usually finds what it needs in a fast, small level close by. When a program has no locality, it keeps asking for data that is not in the fast levels, so it suffers miss after miss, pays the delay of going down to slower levels every time, and the hierarchy gives it little benefit.",
+      "question": "In your own words, why does locality make a layered memory work, and what happens when a program has no locality?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Doubling L1 size will help little if the small array already fits in the original L1, because its hit rate is already high and there is little left to gain. It would help more if the array was just too big for the old L1, since more of it would then stay cached. Removing L2 entirely will hurt the cases where data misses in L1: those misses would now go to L3 or directly to RAM instead of to L2, paying a larger delay. For a small array that fits in L1, the damage is small, because L2 is rarely used; for an array that fits in L2 but not L1, the damage is large, because every L1 miss becomes a slow trip instead of a fast L2 hit.",
+      "question": "Predict the effect of doubling L1 size, and of removing L2 entirely, on a program that repeatedly scans a small array.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "It must go to persistent storage, which survives power loss. RAM and cache forget everything when power is removed, so data that needs to outlive a session has to be written to storage such as a disk or solid-state drive, where it is kept until it is loaded back into memory again.",
+      "question": "Connect this to the next lesson: if RAM is volatile and cache is volatile, where does data go when the power goes off?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-07-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "Use line equals address modulo 4, so each address maps to one line. First sequence 0, 4, 8, 0, 4, 8: 0 goes to line 0 (miss), 4 also goes to line 0 (miss, evicting 0), 8 also goes to line 0 (miss, evicting 4), then 0, 4, and 8 each miss again for the same reason. That is 0 hits and 6 misses: every access conflicts with the previous one because the stride of 4 equals the number of lines. Second sequence 0, 1, 2, 3, 0, 1, 2, 3: 0, 1, 2, 3 fill lines 0, 1, 2, 3 (4 misses), then 0, 1, 2, 3 are all still in their lines (4 hits). That is 4 hits and 4 misses. The difference is conflict: the first pattern reuses the same line and evicts itself every time, while the second pattern fits in the cache and reuses its lines without eviction.",
+      "question": "On paper, simulate a tiny direct-mapped cache with four lines for the access sequence 0, 4, 8, 0, 4, 8, then for 0, 1, 2, 3, 0, 1, 2, 3. Count hits and misses in each case, and explain the difference.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-08": [
+    {
+      "answer": "",
+      "correctAnswer": "A disk reads by moving a head to a track and waiting for the platter to rotate, so a random read pays seek time and rotational latency on every access. An SSD has no moving parts and reads flash cells directly, so a random read avoids that mechanical delay and is far faster. For sequential reads, the disk head is already in place and can stream data once it starts, so the disk is respectable there, and both devices are then limited by their interface, controller, and flash or media bandwidth, not by seek time. The gap therefore narrows for sequential work instead of growing without limit.",
+      "question": "In your own words, why is an SSD faster than a disk for random reads but not infinitely faster for sequential reads?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Performance falls and lifespan shortens. As the drive fills, there are fewer free blocks for the controller to use, so garbage collection and wear levelling have to work harder, erase and rewrite more data to make room, and write amplification rises, which slows writes. The same cells are also rewritten more often, and flash cells wear out after a finite number of writes, so the drive's endurance is consumed faster and its over-provisioning is exhausted sooner.",
+      "question": "Predict what happens to an SSD's performance and lifespan as it approaches full, and why.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "It moves through buses and input/output channels, under operating system and driver control. Data is read from storage into memory, then from memory into the processor's registers and cache for the fetch cycle to use, and written back in the reverse direction. The next lesson is about those buses, input/output methods, and protocols that decide who initiates a transfer, which channel it uses, and how the receiver knows it is complete.",
+      "question": "Connect this to the next lesson: once data is stored, how does it move between storage, memory, and the CPU?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-08-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "There is no single correct pair of drives, so the model answer is the method and the expected pattern, not a specific product. Price per gigabyte: the HDD is usually cheaper, so it suits large, cheap, bulk storage. Sequential speed: the SSD is usually faster, but the HDD is respectable for streaming, so the gap is smaller here than for random work. Random speed: the SSD is far faster, because it has no seek or rotational delay, so it suits operating systems, programs, and databases with many small random reads. Endurance rating: the HDD has no flash write limit, while the SSD has a finite total bytes written rating, so the HDD suits write-heavy archival bulk, and the SSD suits read-heavy or mixed interactive work within its endurance rating. Each of your four sentences should name which device wins that measure and which workload that points to.",
+      "question": "Compare, from specifications only, one HDD and one SSD of similar capacity: price per gigabyte, sequential speed, random speed, and endurance rating. Write one sentence for each about which workload it suits best.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-09": [
+    {
+      "answer": "",
+      "correctAnswer": "Polling means the CPU repeatedly asks every device whether it is ready, which wastes processor time on devices that usually have nothing to say, and can still be slow to notice an urgent event. Interrupts reverse that: a device signals the CPU only when it is ready, so the CPU can do useful work in the meantime and respond promptly when the signal arrives. That is efficient because most devices are idle most of the time, and it avoids starving slow devices while the fastest part dominates.",
+      "question": "In your own words, why does a system need interrupts instead of the CPU polling every device?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "A DMA-capable device can read and write physical memory directly, without the CPU touching every byte and without going through the operating system's normal checks on each access. A malicious device could therefore read secrets such as keys and passwords from memory, or overwrite memory belonging to another program, including control data, and gain control of the machine. That matters for physical security because it means physical access to a port, such as Thunderbolt or an expansion slot, can bypass operating system protections that assume only the CPU and kernel touch memory, which is why unknown devices must not be plugged in.",
+      "question": "Predict what a DMA-capable device could do if it were malicious, and why that matters for physical security.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "They speak machine code and assembly: the instruction set of the processor. Once buses and input/output move data between parts, the CPU itself only understands its own vocabulary of operations, operands, and encodings, and every higher-level program must be translated into that vocabulary before the fetch cycle can execute it.",
+      "question": "Connect this to the next lesson: once parts can communicate, what language do they actually speak to the CPU?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-09-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "Your device list will depend on your machine, so the model answer is the reasoning to apply to each device. A keyboard or mouse is most likely interrupt-driven, because it produces data rarely and unpredictably, and polling it would waste the CPU. A disk, network card, or graphics device moving large amounts of data is most likely DMA, because the CPU should not carry every byte and the controller can move blocks directly to and from memory. Polling is most likely only for a very simple or very fast device where interrupt overhead would be worse, or where the device has no interrupt support. For each device, your sentence should name the method and give the reason: how often it produces data, how much data it moves, and whether waiting for it would waste the CPU.",
+      "question": "List every I/O device attached to a machine you own, and for each, write whether it most likely uses polling, interrupts, or DMA — and why you think so.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
   "systems-10": [
     {
       "question": "In your own words, what is the relationship between machine code, assembly, and a high-level language?",
@@ -300,6 +445,140 @@
       "showCorrectAnswer": false
     }
   ],
+  "systems-13": [
+    {
+      "answer": "",
+      "correctAnswer": "Big-endian stores the most significant byte first: AA BB CC DD. Little-endian stores the least significant byte first: DD CC BB AA. The value is the same in both cases, only the byte order in memory differs.",
+      "question": "In your own words, write the bytes of 0xAABBCCDD in big-endian and little-endian order.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "It sees the byte-reversed value. A big-endian 0xAABBCCDD stored as AA BB CC DD, read by a little-endian reader without conversion, is interpreted as 0xDDCCBBAA. The bytes have not changed, but the reader assigns them the opposite significance, so a large value becomes a very different value, silently, with no error to warn you.",
+      "question": "Predict what a little-endian reader sees when it reads a big-endian 32-bit value, without conversion.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "The operating system manages it all. It loads programs from files into processes, gives each process its own memory and resources, enforces permissions and isolation between programs, and provides the abstractions, such as files and processes, that hide the messy hardware details. The next lesson is about that manager: what an operating system is and why it exists.",
+      "question": "Connect this to the next lesson: if files and processes have this much structure, who manages it all, and enforces the rules between programs?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-13-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "Your header will be made up, so the model answer is what the loader should do with each field, in order. Magic number: the loader checks it first to confirm this file really is an executable of the expected format, and rejects it if it does not match. Word size: the loader learns whether pointers and words are 32-bit or 64-bit, so it knows how to interpret addresses and sizes in the rest of the file. Endianness: the loader learns the byte order, so it reads multi-byte values correctly instead of byte-reversing them. Entry point: the loader learns where execution should start, and sets the program counter to that address after loading. Sections: for each of the two sections, the loader reads its type, size, and location, loads its bytes into memory at the right place, and sets permissions, such as executable for code and writable for data, before starting the program.",
+      "question": "Draw an ELF-style header for a made-up executable: magic number, word size, endianness, entry point, and two sections. Then write, in prose, what a loader would do with each field, in order.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-14": [
+    {
+      "answer": "",
+      "correctAnswer": "The three jobs are abstraction, arbitration, and protection. Abstraction gives programs clean, stable interfaces over messy, varied hardware, so a program reading a file does not need to know what kind of disk it is on. Arbitration shares finite resources fairly, scheduling processor time, allocating memory, and queuing device requests when programs compete. Protection enforces isolation, giving each program its own memory and permissions, so one program cannot read, overwrite, or damage another program's data or the hardware.",
+      "question": "In your own words, what three jobs does an operating system do, and why is each one needed?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Because hardware is messy and varied, and because direct access would break sharing and safety. Every program would need drivers for every device, programs would compete for the same processor, memory, and devices with no referee, and a bug or a malicious program could overwrite another program's memory, reconfigure hardware, or take over the machine. The kernel exists precisely to do privileged hardware work on programs' behalf, after checking each request.",
+      "question": "Why can't an ordinary program talk directly to hardware? What would go wrong if it could?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Kernel space is the kitchen, user space is the dining room. Customers in the dining room order from a menu and never walk into the kitchen or touch the stoves; waiters carry requests back and forth. In the same way, ordinary programs run in user space with limited power and ask for things through system calls, while the kernel runs in kernel space with full power over hardware, checks each request, and does the privileged work. The guarded border between the two is what keeps one program from wrecking the others.",
+      "question": "Explain kernel space and user space to a friend who has never heard of them, using the restaurant analogy or one of your own.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Protection, through isolation. Each program gets its own memory, its own files it is allowed to see, and its own permissions, enforced by the kernel, so one program's crash is contained to its own address space. The kernel reclaims the crashed program's memory and closes its files, while the other programs, in their own separate spaces, keep running unaffected.",
+      "question": "A program crashes, but the rest of the computer keeps working. Which operating system job made that possible, and how?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-14-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "On your own machine or a class lab machine only. Do not change system settings or permissions on any other machine. On your own computer, open its system monitor or task manager and list three programs that are running right now. For each one, write down what hardware it is using - processor time, memory, disk, or network - and one sentence on what would happen to the other programs if that program were allowed to take all of that resource for itself. The expected pattern is: a program taking all processor time would starve the others and make the machine feel frozen; a program taking all memory would force the others to swap or be killed; a program taking all disk or network bandwidth would make the others wait for every file or packet. Your three programs and resources will differ, but each sentence should name the resource and the starvation effect on the others.",
+      "question": "On your own machine or a class lab machine only, and only with systems you own or are authorised to use. Do not change system settings or permissions on any other machine. On your own computer, open its system monitor or task manager and list three programs that are running right now. For each one, write down what hardware it is using — processor time, memory, disk, or network — and one sentence on what would happen to the other programs if that program were allowed to take all of that resource for itself.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-15": [
+    {
+      "answer": "",
+      "correctAnswer": "A program is a passive file on disk, like a recipe book sitting on a shelf. A process is that program running, like a kitchen following the recipe, with its own memory, open files, permissions, and state. A thread is a path of execution inside one process, like an extra cook in the same kitchen: threads share the process's code, data, and open files, but each has its own stack and current position in the code.",
+      "question": "Explain the difference between a program, a process, and a thread, using your own analogy.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Threads share an address space because they belong to the same process, and the process is the unit that owns resources. Sharing makes threads light and fast to create and switch, and lets them communicate easily through shared memory, since no new address space has to be set up. The risk is shared risk: one thread's bug can corrupt data another thread is using, or crash the whole process, because there is no isolation between threads in the same process.",
+      "question": "Why do threads in the same process share an address space, and what risk does that create?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "It is waiting for something outside itself, such as a disk read, a network reply, or an input event. It stays in the waiting state until that event completes, then it moves back to the ready state, where it waits for processor time, and then to the running state when the scheduler picks it again. Waiting does not mean finished: the process's memory, files, and saved position are kept, so it resumes exactly where it left off.",
+      "question": "A process is in the waiting state. What is it waiting for, and what happens when the wait ends?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Because processes give strong isolation and threads do not. Two threads in one process share memory, so untrusted code in one thread could read or corrupt the other thread's data or crash the whole process. Two processes have separate address spaces, so untrusted work is contained: even if it crashes or is compromised, it cannot directly touch the trusted program's memory. That safety is worth the higher cost of creating and switching processes.",
+      "question": "Why might a programmer choose two processes instead of two threads for untrusted work, even though threads are cheaper?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-15-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "On your own machine or a class lab machine only, and only with systems you own or are authorised to use. Do not end, pause, or change the priority of any process you do not recognise. On your own computer, open the task manager or system monitor and pick one application you recognise, such as a browser. Note how many processes it uses and, if the tool shows it, how many threads. Write one sentence for each: what is the process doing, and why might it need more than one thread? If your tool does not show threads, note that, and describe one job inside the application that should not freeze the interface while it runs. The expected pattern is: a browser uses several processes to isolate tabs and extensions, and many threads inside a process so that, for example, one thread can handle your typing and the screen while another downloads a page or saves a file in the background, without freezing the interface.",
+      "question": "On your own machine or a class lab machine only, and only with systems you own or are authorised to use. Do not end, pause, or change the priority of any process you do not recognise. On your own computer, open the task manager or system monitor and pick one application you recognise, such as a browser. Note how many processes it uses and, if the tool shows it, how many threads. Write one sentence for each: what is the process doing, and why might it need more than one thread? If your tool does not show threads, note that, and describe one job inside the application that should not freeze the interface while it runs.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-16": [
+    {
+      "answer": "",
+      "correctAnswer": "Concurrency means several threads are in progress over the same period, taking turns on one core, so only one runs at any instant but all make progress. An example is a single-core machine running a browser, a music player, and a text editor, switching between them many times a second. Parallelism means several threads are literally executing at the same instant on different cores. An example is a four-core machine running a video call, a download, and music on different cores at the same time. A single-core machine can be concurrent but never parallel.",
+      "question": "Explain concurrency and parallelism in your own words, and give an example of each.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "A context switch is not just running different code. The operating system must save the leaving thread's exact position, including its registers, stack pointer, and state, and restore the next thread's, and that changeover evicts useful data from the processor's fast caches, so the new thread then has to reload data it needs. Switching too often therefore wastes the very processor time being shared, even though no user work is done during the switch itself.",
+      "question": "Why does a context switch cost anything at all, if the processor is just running different code?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Because their read-modify-write steps can interleave and one update can be lost. If both threads read the counter as 0, both add 10 to get 10, and both write back 10, the final result is 10, not 20: the second write overwrites the first instead of building on it. If one thread completes its read, add, and write before the other starts, the result is 20. The outcome depends on timing, which is why the bug appears rarely and is hard to reproduce. The fix is synchronisation, such as a lock that makes the read-modify-write sequence happen as one uninterruptible unit.",
+      "question": "Two threads each add 10 to a shared counter that starts at 0. Why might the final result sometimes be 10 instead of 20? Draw the interleaving.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Two common reasons, with what to check first for each: first, the work may not actually be parallelisable, or may be limited by a shared resource, so extra threads mostly wait or contend for the same lock, disk, or memory bandwidth. Check first whether processor use, lock contention, or waiting time, rather than thread count, is the bottleneck. Second, coordination overhead may swamp the gain: context switches, cache evictions, and lock contention cost time, and beyond the number of cores extra threads mostly add switching overhead. Check first how many threads are actually running versus waiting, and whether removing threads or reducing shared data makes it faster.",
+      "question": "A program feels slow even though you added more threads. List two reasons why that could happen, and what you would check first.",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-16-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "On your own machine or a class lab machine only, and only with systems you own or are authorised to use. Do not run stress or load tests on any shared or production system. On your own computer, open two things at once: a program that responds to you (such as a text editor) and a long-running job (such as copying a large folder or compressing a file). While the long job runs, type in the editor and notice whether it stays responsive. Then, in writing, explain which scheduling choice keeps the editor responsive, and what would happen to responsiveness if time slices were made ten times longer. The expected answer is: preemptive scheduling with short time slices keeps the editor responsive, because the scheduler regularly takes the processor back from the long job and gives the editor a slice, so typing is handled promptly. If time slices were made ten times longer, the long job would hold the processor for much longer stretches, the editor would wait longer between slices, and typing would feel laggy or frozen, even though total throughput might improve slightly from fewer context switches.",
+      "question": "On your own machine or a class lab machine only, and only with systems you own or are authorised to use. Do not run stress or load tests on any shared or production system. On your own computer, open two things at once: a program that responds to you (such as a text editor) and a long-running job (such as copying a large folder or compressing a file). While the long job runs, type in the editor and notice whether it stays responsive. Then, in writing, explain which scheduling choice keeps the editor responsive, and what would happen to responsiveness if time slices were made ten times longer.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
   "systems-17": [
     {
       "answer": "",
@@ -331,6 +610,163 @@
       "answer": "",
       "correctAnswer": "Expected outcome: the added-up memory of a few large programs often exceeds total physical memory, and the machine still works. That is normal in a virtual memory system, not an error. Only the pages actually in use need a physical frame at any moment. Idle pages sit on disk, not in physical memory, and a page fault loads them back on demand when the program touches them again. For example, an idle browser tab's pages sit on disk until you click the tab, when a burst of page faults loads them back, slightly delayed but intact. If too many programs became active at once, you would expect thrashing: the system would spend more time moving pages between disk and memory than doing work, and everything would slow at once, because fetching a page from disk is thousands of times slower than reading physical memory.",
       "question": "On your own machine or a class lab machine only, and only with systems you own or are authorised to use. Do not inspect the memory of any process that is not yours. On your own computer, open a system monitor and note the memory reported for a browser or editor you are running, then note your machine's total physical memory. Add up the memory of a few large programs: does the total exceed physical memory? Write a short paragraph explaining, using pages and page faults, why the machine still works — and what you would expect to notice if too many of those programs became active at once.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-18": [
+    {
+      "answer": "",
+      "correctAnswer": "Step by step: the program calls open with a path, which becomes a system call to the kernel. The kernel walks the path directory by directory, starting from the root, and for each directory it looks up the next name in that directory's list of names mapped to metadata records. When it reaches the final name, it finds the file's inode, checks the file's permission bits against the caller's identity, and refuses the open if permission is denied. If allowed, it follows the inode's pointers to the file's data blocks, sets up a file descriptor for the program to use for later reads and writes, and returns that descriptor. The program then works with the descriptor, not with block numbers.",
+      "question": "Trace, step by step, what the operating system does when a program opens a file by its path.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "An inode stores everything about a file except its name and its data: its type, size, owner and group, permission bits, timestamps, and pointers to its data blocks. It deliberately does not store the name, because a name lives in a directory entry, and that separation is what lets one file have several names, through hard links, and lets a file be renamed by changing a directory entry without moving its data. The data itself is only freed when the last name pointing at the inode is removed.",
+      "question": "What does an inode store, and what does it deliberately not store? Why is the name kept elsewhere?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Deleting a file usually only removes its directory entry and returns its blocks to the free list; the bytes themselves remain on disk until something else overwrites them, which is why deleted files can sometimes be recovered. For genuinely sensitive data, that is not enough: you should overwrite the data, use a secure deletion tool that overwrites it, or encrypt the whole disk so that the remaining bytes are unreadable without the key, and, for the strongest guarantee, physically destroy the medium. Simply deleting the name does not destroy the data.",
+      "question": "Why is deleting a file not the same as erasing its data, and what would you do instead for genuinely sensitive data?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Two effects combine. First, fragmentation: as files grow, shrink, and are deleted, a file's blocks scatter across the disk, so reading a file that used to be contiguous now requires many separate seeks, which is especially slow on spinning disks. Second, free-space allocation: with only 5 percent free, the file system struggles to find large contiguous runs of free blocks, so new writes are forced into small, scattered gaps, and it may have to work harder, moving or splitting data, to place anything at all. The result is more seeks, more work per write, and a machine that feels slow even though the processor is fine.",
+      "question": "A disk is 95 percent full and everything feels slow. Using fragmentation and free-space allocation, explain why.",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-18-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "On your own machine or a class lab machine only, and only with systems you own or are authorised to use. Do not change permissions on system files or on any file you do not own. On your own computer, create a folder in your own home directory with three text files inside it. Check the permissions and sizes of those files using your system's file properties or a file listing, then rename one file and move another into a subfolder. Write down what changed and what did not: did the file's contents move, did its size change, and what stayed the same? Then delete a copy of a file you created for this exercise - not an original you need - and note, in your own words, why its data might still be recoverable until overwritten. The expected pattern is: renaming changes only the directory entry, not the contents, size, or inode; moving a file within the same file system also changes only its directory entry, not its data; the size and contents stay the same in both cases. Deleting the copy removes its directory entry and returns its blocks to the free list, but its bytes remain on disk until overwritten, which is why recovery is possible until then.",
+      "question": "On your own machine or a class lab machine only, and only with systems you own or are authorised to use. Do not change permissions on system files or on any file you do not own. On your own computer, create a folder in your own home directory with three text files inside it. Check the permissions and sizes of those files using your system's file properties or a file listing, then rename one file and move another into a subfolder. Write down what changed and what did not: did the file's contents move, did its size change, and what stayed the same? Then delete a copy of a file you created for this exercise — not an original you need — and note, in your own words, why its data might still be recoverable until overwritten.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-19": [
+    {
+      "answer": "",
+      "correctAnswer": "Boundaries crossed, in order: first, the user-space to kernel-space boundary, through a system call gate, where the kernel validates the arguments and checks the caller's permissions and account. Second, the file system boundary, where the kernel walks the path, finds the inode, and checks permission bits again as the authority, not the program. Third, the driver boundary, where the kernel asks the file system driver and block device driver to read the right blocks. Fourth, the hardware boundary, where the driver programs the disk hardware to perform the read. The result then returns back through driver, file system, and system call gate to the program, as a file descriptor and then as data. At each boundary a different check happens: the system call gate checks validity and identity, the file system checks path and permissions, the driver checks device state and addresses, and the hardware performs only what the driver commands.",
+      "question": "A program wants to read a file. List every boundary it crosses, and who checks what at each one.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "For a keyboard, events are rare and unpredictable, so polling would waste the processor asking an empty question thousands of times a second, while an interrupt lets the processor do useful work and respond promptly only when a key is actually pressed. For a device that produces data constantly, interrupts become a problem instead: every item triggers a handler, the processor spends most of its time entering and leaving handlers, and a flood of interrupts can starve ordinary work, a problem known as an interrupt storm. For such devices, polling in a tight loop, or DMA moving blocks without per-item interrupts, can be more efficient, because the overhead per item is lower when there is always data to collect.",
+      "question": "Why is interrupt-driven input more efficient than polling for a keyboard, but not necessarily for a device that produces data constantly?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "A driver is the kernel's translator for a specific device or family of devices: it knows the device's registers, command sequences, and quirks, and presents a standard interface, such as read a block or send a packet, to the rest of the kernel. A driver bug is more serious than a bug in an ordinary program because drivers often run in kernel space, with full privilege over hardware and memory. A driver fault can therefore crash the whole system, bypass the protections user programs must obey, or let a malicious or compromised device attack the kernel from the hardware side, instead of being contained to one program's address space.",
+      "question": "What is a driver, and why is a driver bug more serious than a bug in an ordinary program?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Privilege escalation is an attack that breaks a privilege boundary to gain more power than the attacker should have. At the processor level, an example is exploiting a kernel or system call validation bug so that user-space code tricks the kernel into running its code in kernel mode, gaining the ability to execute privileged instructions, change page tables, and touch hardware directly. At the account level, an example is an ordinary user gaining administrator or root rights, for example through a misconfigured privileged program, a stolen administrator credential, or a vulnerable service running as administrator, so that the kernel then grants requests it would have refused from the ordinary account.",
+      "question": "Explain privilege escalation in your own words, and give one example at the processor level and one at the account level.",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-19-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "On your own machine or a class lab machine only, and only with systems you own or are authorised to use. Do not install, replace, or test drivers, and do not attempt to gain privilege on any system you do not own or are not explicitly authorised to test. On your own computer, open a file you created yourself in a text editor, then check the editor's open files or recent files, if your system shows them. Write a paragraph tracing the journey: the editor's request, the kernel's permission check, the file system lookup, and the disk read. Then press a key and, in one sentence, explain why the editor did not need to poll the keyboard to notice it. If you cannot see open files on your system, trace the same journey for opening a web page's file download instead, using only files you own. The expected paragraph is: the editor makes a system call to open the file, the kernel checks the file's permissions against your account, the file system walks the path to the inode and follows its block pointers, and the driver reads those blocks from disk, returning the contents through the kernel to the editor. The one sentence for the key press is: the keyboard raised an interrupt, so the kernel's handler delivered the key to the editor without the editor having to poll the keyboard.",
+      "question": "On your own machine or a class lab machine only, and only with systems you own or are authorised to use. Do not install, replace, or test drivers, and do not attempt to gain privilege on any system you do not own or are not explicitly authorised to test. On your own computer, open a file you created yourself in a text editor, then check the editor's open files or recent files, if your system shows them. Write a paragraph tracing the journey: the editor's request, the kernel's permission check, the file system lookup, and the disk read. Then press a key and, in one sentence, explain why the editor did not need to poll the keyboard to notice it. If you cannot see open files on your system, trace the same journey for opening a web page's file download instead, using only files you own.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-20": [
+    {
+      "answer": "",
+      "correctAnswer": "A stack value cannot safely outlive its function because its frame is popped when the function returns: allocation and freeing are just moving the stack pointer in strict last-in-first-out order, so the memory is immediately available to be reused by the next call. A heap value can outlive its function because it is allocated explicitly and lives until it is explicitly freed or collected, independent of any function's frame, so a pointer to it remains valid across many calls as long as it has not been freed.",
+      "question": "In your own words, why can a stack value not safely outlive its function, and why can a heap value?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Recursing without a base case pushes a new stack frame on every call, with no return to pop them, so the stack grows until it collides with its limit or the heap and the program crashes with a stack overflow. Allocating in a loop without freeing grows the heap instead: each block is requested and never returned, so memory use climbs steadily, the system slows as memory fills, and eventually the process may be killed or the system may run out of memory. The first is a fast, visible crash; the second is a slow leak.",
+      "question": "Predict what happens when a program recurses without a base case, and when it allocates in a loop without freeing.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Pointers. A pointer is an address naming a location in memory, so a program can refer to a value in the stack or the heap without copying it, and can keep referring to a heap value long after the function that allocated it has returned. The next lesson is about that mechanism: what a pointer is, how dereferencing works, and what goes wrong when the thing at the address is no longer what you think it is.",
+      "question": "Connect this to the next lesson: if values live at addresses in these regions, what is the mechanism for referring to them?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-20-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "Draw a process image with a stack at one end and a heap at the other, growing towards each other. Stack frames, from bottom to top: main, then f called by main, then g called by f, each frame holding its return address, saved registers, and local variables. Plus one heap block, separate from the stack, allocated explicitly. Mark survival: when g returns, g's frame is popped and its locals die, but f's frame, main's frame, and the heap block survive. When f returns, f's frame is popped and its locals die, but main's frame and the heap block survive. When main returns, main's frame is popped and the process ends; the heap block survives only until it is explicitly freed, and if it is never freed it leaks. The key point is lifetime, not size: stack values die with their frame, heap values die only when freed.",
+      "question": "Draw a process image with stack frames for main calling f calling g, plus one heap block. Label each value's region, and mark which values survive when g returns, when f returns, and when main returns.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-21": [
+    {
+      "answer": "",
+      "correctAnswer": "A pointer is an address written on a card: a small value stored somewhere that names a location. The address is the street address itself, the number naming a byte in the process's address space. The value at that address is what lives in the house at that address: the data you find when you dereference the pointer and visit that location. Confusing any two of the three, or following a card after the house has been demolished, is where pointer bugs come from.",
+      "question": "In your own words, distinguish a pointer, an address, and the value at that address, using the house-and-card analogy or your own.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Returning a pointer to a stack local gives the caller a dangling pointer: the function's frame was popped on return, so that memory is free to be reused by the next call, and the value it held may change by itself or be overwritten, even though the pointer still looks valid. Keeping a pointer to a heap block after it is freed is the same kind of dangling pointer, called use-after-free: the block may be reallocated to other data, so reading or writing through the old pointer reads or corrupts data that now belongs to something else, with no error at the point of the mistake.",
+      "question": "Predict what happens when a function returns a pointer to its stack local, and when a heap block is freed but its pointer is kept.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "By laying out many values together, using the same address arithmetic. An array lays out elements of the same type back-to-back, so element i is at base plus i times element size. A struct lays out fields of mixed types in declaration order, with padding so each field starts at a suitably aligned address. The next lesson is about that layout: how arrays and structs are arranged in memory, and what padding and alignment do to size and speed.",
+      "question": "Connect this to the next lesson: if a pointer names one element, how does a program lay out many elements, and structures of mixed types, in memory?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-21-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "Draw three variables in a row, each with its own address, and a pointer variable whose value is the address of the second variable. Show three things separately: the pointer itself, stored somewhere, the address it holds, which is the second variable's address, and the value at that address, which is the second variable's contents. When the pointer is incremented by one element, it moves by the size of one element, not by one byte, so it now points at the third variable, and dereferencing it gives the third variable's value. When the pointed-to value is freed, the pointer becomes dangling: it still holds the old address, but that memory no longer belongs to the original value and may be reused, so dereferencing it is unsafe.",
+      "question": "On paper, draw three variables and a pointer to the second. Show the pointer, its address, and the value at that address. Then show what changes when the pointer is incremented by one element, and when the pointed-to value is freed.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-22": [
+    {
+      "answer": "",
+      "correctAnswer": "The fifth element is at address 1032, assuming the first element is at address 1000. The address of element i is base plus i times element size, and the fifth element is index 4, counting from zero, so 1000 plus 4 times 8 equals 1032. If you count the first element as element 1 in words, that is still the same calculation: four steps of 8 bytes past the base.",
+      "question": "In your own words, compute the address of the fifth element of an array of 8-byte values starting at address 1000.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Without padding, the size is 6 bytes: 1 for the first byte, plus 4 for the integer, plus 1 for the last byte. With padding, the size is 12 bytes: the first byte at offset 0, three padding bytes at offsets 1 to 3 so the 4-byte integer starts at a multiple of 4, the integer at offsets 4 to 7, the last byte at offset 8, and three trailing padding bytes at offsets 9 to 11 so the whole struct size is a multiple of its largest alignment, 4. The two orders differ because padding depends on where the large field sits: byte, byte, integer needs only two padding bytes before the integer, for a total of 8, and integer, byte, byte needs two trailing padding bytes, also for a total of 8, while byte, integer, byte wastes padding both before the integer and at the end, for a total of 12. Reordering from largest to smallest therefore shrinks the struct.",
+      "question": "Predict the size of a struct with a byte, a 4-byte integer, and a byte, with and without padding — and explain why the two orders differ.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Two things go wrong, both because layout is predictable. If a program lives longer than its data, it can hold a pointer to memory that has already been freed or whose stack frame has been popped, and that dangling pointer will read or write memory that now belongs to something else. If a program writes beyond its bounds, it writes past the end of an array or struct into whatever follows it in memory, such as another variable, a saved register, or a return address, corrupting that neighbour silently. The next lesson is about those lifetime and bounds errors: use-after-free, double-free, leaks, and buffer overflows.",
+      "question": "Connect this to the next lesson: if layout is this predictable, what goes wrong when a program lives longer than its data, or writes beyond its bounds?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-22-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "Assume age is a 4-byte integer, grade average is an 8-byte double, and a pointer is 8 bytes, as the task specifies 8-byte alignment for pointers and doubles. Original order, name pointer, age, grade average: pointer at offsets 0 to 7, age at offsets 8 to 11, four padding bytes at offsets 12 to 15 so the double starts at a multiple of 8, double at offsets 16 to 23, total size 24. Reordered to minimise padding, pointer, double, age: pointer at offsets 0 to 7, double at offsets 8 to 15, age at offsets 16 to 19, four trailing padding bytes at offsets 20 to 23 so the size is a multiple of 8, total size still 24. Reordering removes the internal padding but not the trailing padding in this case, because the struct size must still round up to the largest alignment, 8. The lesson is that ordering largest to smallest removes internal waste, even when the total size stays the same because of trailing padding.",
+      "question": "Design, on paper, a struct for a student record (name as a pointer, age, grade average) and draw its layout with padding, assuming 8-byte alignment for pointers and 8-byte doubles. Then reorder the fields to minimise padding and redraw.",
       "section": "Main",
       "showCorrectAnswer": false
     }
@@ -430,6 +866,88 @@
       "question": "On your own machine only. Do a paper simulation first — no code needed. Write a shared tally starting at 10. Play two workers, A and B, each following the steps \"read the tally, add 1, write the tally back.\" Interleave their steps in three different orders, including one where both read before either writes. Record the final tally for each order and circle the lost update. Then, on your own machine only, open your operating system's process viewer and find a program with many threads; note how many threads it has and why a program that looks like \"one app\" is really many paths of execution sharing data. Write one sentence naming the shared data you think matters most in that program, and one sentence naming what a lock would protect there.",
       "answer": "",
       "correctAnswer": "Paper simulation, three orders. Order 1, A fully then B: A reads 10, writes 11, B reads 11, writes 12, final tally 12, no lost update. Order 2, B fully then A: B reads 10, writes 11, A reads 11, writes 12, final tally 12, no lost update. Order 3, both read before either writes: A reads 10, B reads 10, A writes 11, B writes 11, final tally 11, circle this lost update, one increment vanished because both workers used the same stale read. Process viewer part, worked example: a web browser may show dozens of threads across its processes, because one app is really many paths of execution, one per tab, one for networking, one for rendering, one for the interface, sharing data such as the tab list, the download list, or the open document. The shared data that matters most is the list of open tabs and pages, and a lock would protect that list while a thread adds, closes, or reads a tab, so two threads cannot update it at the same moment.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-26": [
+    {
+      "answer": "",
+      "correctAnswer": "Process A has no address that names Process B's memory, because each process gets its own virtual address space, its own private view of memory as if it owned the whole machine. The hardware memory-management unit enforces this on every access, using page tables set up by the operating system: each process has its own page table mapping its virtual pages to physical pages, and only the kernel may change page tables. An ordinary bug in A therefore cannot read or corrupt B's data, because A's addresses simply do not translate to B's physical pages, unless memory has been deliberately shared by mapping the same physical pages into both address spaces.",
+      "question": "Explain, in your own words, why Process A cannot simply read Process B's memory, and name the hardware and operating-system mechanisms that enforce that.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Privilege is the level of authority a program runs at, such as user mode versus kernel mode, or an ordinary account versus an administrator account. Permission is whether a particular identity is allowed a particular operation on a particular resource, such as reading a specific file. Example of permission without privilege: an ordinary user program has permission to read its own file, but lacks the privilege to execute a privileged instruction, change page tables, or load a driver. Example of privilege without permission: a program running with elevated privilege, such as an administrator service, may still be denied a specific file if that file is encrypted with another user's key or protected by a sandbox that does not grant access to it, because elevation does not automatically grant the key or the sandbox permission. Note that on many systems a root account can bypass simple permission bits, so the clean distinction is processor mode and account authority versus per-resource permission checks, not that privilege always wins.",
+      "question": "What is the difference between privilege and permission? Give an example where a program has the permission it needs but lacks the privilege, and one where the reverse is true.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Step by step: first, a buffer overflow writes past the end of a buffer inside one program, overwriting adjacent memory, which may include control data such as a return address. That gives the attacker control of execution inside that program, crossing the memory-safety boundary. Next, the attacker uses that control to escape the program's sandbox or restricted environment, if any, crossing the isolation boundary into a more privileged process. Next, the attacker exploits a privilege-escalation flaw to run code in kernel mode or as administrator, crossing the privilege boundary. Finally, with kernel or administrator power, the attacker can read any memory, touch any device, install persistent malware, and disable protections, which is a full machine takeover. Each step crosses a different boundary: memory safety, then isolation, then privilege, then the whole system.",
+      "question": "Trace the chain from a buffer overflow to a full machine takeover, naming each boundary crossed at each step.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Initial flaw: an out-of-bounds write in the sandboxed renderer, a memory-safety error. First gain: control of execution or arbitrary write inside the renderer process, contained at first by the sandbox. Boundary crossed: the sandbox boundary, via the chained privilege-escalation flaw in the kernel, which lets the attacker run code in kernel mode. Final impact: full machine control, since kernel power can read any memory, touch any device, and bypass other protections. One layer that could have stopped each step: bounds checking, memory-safe code, or non-executable data pages for the renderer flaw; sandbox isolation and least privilege for the renderer gain; kernel patching, privilege separation, and layout randomisation for the kernel flaw; and monitoring, patching, and least-privilege permissions as a final layer around all of it.",
+      "question": "Read (in your head, from the description in this lesson) a vulnerability described as \"an out-of-bounds write in a sandboxed renderer, chained with a privilege-escalation flaw in the kernel.\" Map it: initial flaw, first gain, boundary crossed, final impact, and one layer that could have stopped each step.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Because every single boundary can fail, and defence in depth is designed so that one failure is not fatal. Kernels have bugs, permissions are misconfigured, sandboxes have escapes, and hardware flaws have broken supposedly solid boundaries in real systems. Layering memory-safety mitigations, address-space isolation, privilege separation, permissions and sandboxing, and monitoring and patching means an attacker must cross several independent layers, not just one. A misconfigured layer costs you the protection that layer was supposed to provide, and worse, it can give false confidence: you believe you are protected, so you do not notice that one failure now leads straight to takeover, instead of being caught by the next layer.",
+      "question": "Why is defence in depth necessary even if you believe each individual boundary is strong? What does a misconfigured layer cost you?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-26-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "On your own machine or a class lab only. Reading and inspecting your own system is safe; never probe, test, or attempt to bypass protections on a system you do not own or are not authorised to test. Two reading-only exercises. First, on your own phone or computer only, list the permissions granted to three apps you actually use, and for each one, write whether it follows least privilege or asks for more than its job needs - and which permission you would remove if you could. Second, find a public vulnerability summary from a vendor advisory or reputable security news source (reading only - do not download exploits, do not test anything) and map it to boundaries using the four questions in the Technical Explanation: initial flaw, first gain, boundary crossed, and layers that could have stopped it. Write the map in four short lines. The expected pattern for the first exercise is: an app that only needs, for example, camera access for photos but also asks for contacts, location, and microphone is asking for more than its job needs, and the permission to remove is the one unrelated to its job. For the second exercise, the four lines should be: initial flaw, such as a memory error or misconfiguration; first gain, such as a read, write, or control inside the first program; boundary crossed, such as a sandbox escape or privilege escalation; and layers that could have stopped it, such as bounds checking, isolation, least privilege, or patching.",
+      "question": "On your own machine or a class lab only. Reading and inspecting your own system is safe; never probe, test, or attempt to bypass protections on a system you do not own or are not authorised to test. Two reading-only exercises. First, on your own phone or computer only, list the permissions granted to three apps you actually use, and for each one, write whether it follows least privilege or asks for more than its job needs — and which permission you would remove if you could. Second, find a public vulnerability summary from a vendor advisory or reputable security news source (reading only — do not download exploits, do not test anything) and map it to boundaries using the four questions in the Technical Explanation: initial flaw, first gain, boundary crossed, and layers that could have stopped it. Write the map in four short lines.",
+      "section": "Main",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-27": [
+    {
+      "answer": "",
+      "correctAnswer": "Three hypotheses, each with a supporting and a ruling-out measurement. Hypothesis 1, a runaway process: support is one process near 100 percent processor use while the symptom lasts; ruling out is processor use low or idle while the machine still feels slow. Hypothesis 2, memory full and swapping: support is memory near full, swap use active and growing, and a process whose memory grows steadily; ruling out is plenty of free memory and no swap use. Hypothesis 3, disk full or disk busy: support is a disk near full, or one process with constant heavy disk activity while the symptom lasts; ruling out is plenty of free disk space and low disk activity. Each hypothesis must be tested with its own predicted measurement, not by blaming the biggest number you happen to see.",
+      "question": "A computer is slow. State three different hypotheses, and for each one, state exactly what measurement would support it and what measurement would rule it out.",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Because tools show measurements, not diagnoses, and without a hypothesis you will pattern-match to whatever looks dramatic, whether or not it explains the symptom. Forming a hypothesis first forces you to predict what you should see if your theory is right, so a negative result can rule a theory out, which is just as valuable as a positive result confirming one. Opening tools first invites the classic beginner error of blaming the biggest number, even when that number is normal background work, while the real cause hides in an unglamorous column such as swap use.",
+      "question": "Why should you form a hypothesis before opening a tool? What goes wrong when you open tools first?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "Observing means reading the system without changing it, such as listing processes, reading memory and disk statistics, and reading logs. Changing means altering the system, such as ending a process, deleting files, changing settings, or restarting a service. The distinction matters more on a shared machine because changing can destroy another user's unsaved work, break a program other people depend on, or exceed your authority, while observing, done properly, does not affect other users at all. On your own machine, observe freely and change deliberately; on a machine you do not own or are not authorised to administer, do not change anything.",
+      "question": "Explain the difference between observing and changing a system, and give two examples of each. Why does the distinction matter more on a shared machine?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "When memory is full, the system starts swapping, using disk as overflow memory because physical memory is full. Disk is orders of magnitude slower than memory, so every page fault that has to go to disk feels dramatically slower, and the machine slows all at once, not gradually. Buying a faster processor is the wrong fix because the processor is not the bottleneck: it is waiting for slow disk swaps, and a faster processor will simply wait faster. The fix is freeing memory, closing programs, or adding memory, so the system stops swapping.",
+      "question": "Memory is full and swap use is high. Why does the machine feel dramatically slower, and why is \"buy a faster processor\" the wrong fix?",
+      "showCorrectAnswer": false
+    },
+    {
+      "answer": "",
+      "correctAnswer": "A warning every few seconds from the same service, starting an hour before the symptom appeared, suggests a service stuck in a retry loop: it fails, logs a warning, tries again, fails again, and repeats, possibly consuming resources or filling logs, and the symptom appeared after an hour of that loop, not at the moment it started. What to check next is what that service is trying to do, why it keeps failing, and whether its activity correlates with processor, memory, or disk use at the slow time, and to read the log entries around the first occurrence for the original error, rather than just the repeated warnings.",
+      "question": "A log shows a warning every few seconds from the same service, starting an hour before the symptom appeared. What does that pattern suggest, and what would you check next?",
+      "showCorrectAnswer": false
+    }
+  ],
+  "systems-27-lab": [
+    {
+      "answer": "",
+      "correctAnswer": "On your own machine or a class lab only. Observe only - do not end processes, delete files, or change settings, and never use these tools on a system you do not own or are not authorised to test. Pick a moment when your own machine feels busy, or create one by opening several programs at once. First, write a one-sentence hypothesis about what is busy and a prediction about what you should see. Then open your operating system's process viewer and check processor use, memory use, and (if shown) disk activity, sorted by the column your hypothesis predicts. Compare what you see with your prediction, and write three lines: what you predicted, what you observed, and whether your hypothesis survived. If it did not survive, write a new hypothesis and test that one. The deliverable is not a fix - it is a short, honest record of hypothesis, evidence, and revision. The expected pattern is: hypothesis, such as one process is using all the processor; prediction, such as that process should show near 100 percent processor use; observation, such as the process list shows that process at 95 percent, or shows instead high swap use; and verdict, such as hypothesis survived, or hypothesis did not survive and the new hypothesis is memory pressure, to be tested next.",
+      "question": "On your own machine or a class lab only. Observe only — do not end processes, delete files, or change settings, and never use these tools on a system you do not own or are not authorised to test. Pick a moment when your own machine feels busy, or create one by opening several programs at once. First, write a one-sentence hypothesis about what is busy and a prediction about what you should see. Then open your operating system's process viewer and check processor use, memory use, and (if shown) disk activity, sorted by the column your hypothesis predicts. Compare what you see with your prediction, and write three lines: what you predicted, what you observed, and whether your hypothesis survived. If it did not survive, write a new hypothesis and test that one. The deliverable is not a fix — it is a short, honest record of hypothesis, evidence, and revision.",
       "section": "Main",
       "showCorrectAnswer": false
     }
